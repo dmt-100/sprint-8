@@ -13,20 +13,17 @@ public class Epic extends Task {
     из пачки
 Всем привет! а у вас у всех классы Task, Subtask и Epic не имеют ссылок друг на друга? Вчера жестко потратил 2ч на то что gson пытался сделать бесконечный паровозик из моих классов Subtask и Epic, так как у Epic есть массив Subtask'ов и у Subtask есть ссылка на Epic. Как я понял, gson пытался сериализовать Epic, в котором есть Subtask'и, а у него в свою очередь ссылка Epic, и тут начинается бесконечность ) только слово transient разорвало паровоз
  */
+
     private final transient List<UUID> subtasks;
-    private LocalDateTime endTime;
 
     public Epic(
             TaskType taskType,
             String name,
             String description,
             Status status,
-            LocalDateTime startTime,
-            int duration,
             List<UUID> subtasks
     ) {
-        super(taskType, name, description, status, startTime, duration);
-        endTime = startTime;
+        super(taskType, name, description, status);
         this.subtasks = subtasks;
     }
 
@@ -41,34 +38,46 @@ public class Epic extends Task {
             List<UUID> subtasks
     ) {
         super(id, taskType, name, description, status, startTime, duration);
-        endTime = startTime.plusMinutes(duration);
         this.subtasks = subtasks;
     }
 
-    public Epic( // конструктор для восстановления taskfromString() создания задачи из строки
+    public Epic(
+            UUID id,
+            TaskType taskType,
+            String name,
+            String description,
+            Status status,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            int duration,
+            List<UUID> subtasks
+            ) {
+        super(id, taskType, name, description, status, startTime, endTime, duration);
+        this.subtasks = subtasks;
+    }
+
+    public Epic(
                  UUID id,
                  TaskType taskType,
                  String name,
                  String description,
                  Status status,
-                 LocalDateTime startTime,
-                 LocalDateTime endTime,
-                 int duration,
                  List<UUID> subtasks
     ) {
-        super(id, taskType, name, description, status, startTime, endTime, duration);
+        super(id, taskType, name, description, status);
         this.subtasks = subtasks;
     }
+//
+//    public Epic( // конструктор для восстановления taskfromString() создания задачи из строки
+//    ) {
+//        super(id, taskType, name, description, status);
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.subtasks = subtasks;
+//        this.duration = duration;
+//    }
 
-    @Override
-    public List<UUID> getSubtasks() {
-        return subtasks;
-    }
 
-    @Override
-    public void setSubtasks(UUID subtask) {
-        subtasks.add(subtask);
-    }
 
     @Override
     public String cleanSubtaskIds() {
@@ -81,23 +90,43 @@ public class Epic extends Task {
         subtasks.remove(id);
     }
 
-    public LocalDateTime getEndTime() {
-        return endTime;
+//    @Override
+//    public LocalDateTime getStartTime() {
+//        return startTime;
+//    }
+//
+//    @Override
+//    public void setStartTime(LocalDateTime startTime) {
+//        this.startTime = startTime;
+//    }
+//
+//    public LocalDateTime getEndTime() {
+//        return endTime;
+//    }
+//
+//    @Override
+//    public void setEndTime(LocalDateTime endTime) {
+//        this.endTime = endTime;
+//    }
+
+//    @Override
+//    public int getDuration() {
+//        return super.getDuration();
+//    }
+//
+//    @Override
+//    public void setDuration(int duration) {
+//        super.setDuration(duration);
+//    }
+
+    @Override
+    public List<UUID> getSubtasks() {
+        return subtasks;
     }
 
     @Override
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    @Override
-    public int getDuration() {
-        return super.getDuration();
-    }
-
-    @Override
-    public void setDuration(int duration) {
-        super.setDuration(duration);
+    public void setSubtasks(UUID subtask) {
+        subtasks.add(subtask);
     }
 
 

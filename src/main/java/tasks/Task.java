@@ -37,6 +37,32 @@ public class Task {
     }
 
     public Task(
+            TaskType taskType,
+            String name,
+            String description,
+            Status status
+    ) {
+        this.taskType = taskType;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(
+            UUID id,
+            TaskType taskType,
+            String name,
+            String description,
+            Status status
+    ) {
+        this.id = id;
+        this.taskType = taskType;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(
             UUID id,
             TaskType taskType,
             String name,
@@ -69,14 +95,14 @@ public class Task {
 //    }
 
     public Task( // для восстановления taskfromString()
-            UUID id,
-            TaskType taskType,
-            String name,
-            String description,
-            Status status,
-            LocalDateTime startTime,
-            LocalDateTime endTime,
-            int duration
+                 UUID id,
+                 TaskType taskType,
+                 String name,
+                 String description,
+                 Status status,
+                 LocalDateTime startTime,
+                 LocalDateTime endTime,
+                 int duration
     ) {
         this.id = id;
         this.taskType = taskType;
@@ -89,13 +115,13 @@ public class Task {
     }
 
     public Task( // для тестов
-            UUID id,
-            TaskType taskType,
-            String name,
-            String description,
-            Status status,
-            LocalDateTime startTime,
-            int duration
+                 UUID id,
+                 TaskType taskType,
+                 String name,
+                 String description,
+                 Status status,
+                 LocalDateTime startTime,
+                 int duration
     ) {
         this.id = id;
         this.taskType = taskType;
@@ -150,6 +176,10 @@ public class Task {
     }
 
     public LocalDateTime getStartTime() {
+        LocalDateTime ldtNull = LocalDateTime.parse("2000-01-01T00:00:00"); // временно изза тестов
+        if (startTime == null) {
+            startTime = ldtNull;
+        }
         return startTime;
     }
 

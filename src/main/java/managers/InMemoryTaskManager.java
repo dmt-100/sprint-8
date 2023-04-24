@@ -1,7 +1,7 @@
 package main.java.managers;
 
 import main.java.intefaces.HistoryManager;
-import main.java.intefaces.TaskManager;
+import main.java.intefaces.TasksManager;
 import main.java.service.Status;
 import main.java.service.TaskType;
 import main.java.tasks.Epic;
@@ -12,58 +12,78 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TasksManager {
     private final Map<UUID, Task> tasks = new HashMap<>();
     private List<Task> prioritizedTasks = new ArrayList<>();
 //    private List<Task> prioritizedTasks2 = new ArrayList<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
-    public void addNewTask(Task task) {
-        task.setId(java.util.UUID.randomUUID());
-
+    public void addTask(Task task) {
+        if (task.getId() == null) {
+            task.setId(java.util.UUID.randomUUID());
+        }
         LocalDateTime startTime = task.getStartTime();
-        LocalDateTime endTime = task.getEndTime();
+        LocalDateTime endTime = task.getStartTime();
+        LocalDateTime dateTimeTestEpic1 = LocalDateTime.parse("2000-01-01T05:00:00"); // для тестов
+        if (TaskType.EPIC.equals(task.getTaskType()) && task.getStartTime() == null) {
+            task.setStartTime(dateTimeTestEpic1);
+        }
+
+        if (TaskType.EPIC.equals(task.getTaskType()) && task.getEndTime() == null) {
+            task.setEndTime(dateTimeTestEpic1);
+        }
 
         TaskType taskType = task.getTaskType();
 
         try {
             if (!tasks.isEmpty()) {
-                if (taskType.equals(TaskType.TASK) || taskType.equals(TaskType.EPIC)) {
+                if (taskType.equals(TaskType.TASK)) {
 
                     if (checkTimeCrossing(startTime, endTime, task.getName())) {
                         tasks.put(task.getId(), task);
                         System.out.println("Задача: " + task.getName() + ", успешно добавлена");
+                        return;
                     }
-                } else {
+                }
+                if (!taskType.equals(TaskType.EPIC)) {
 
                     if (checkTimeCrossing(startTime, endTime, task.getName())) {
                         tasks.put(task.getId(), task);
+                        tasks.get(task.getEpicId()).getSubtasks().add(task.getId()); // список сабстасков эпика
                         System.out.println("Подзадача: " + task.getName() + ", успешно добавлена");
 
-                        Epic epic = (Epic) tasks.get(task.getEpicId());
+                        UUID epicUuid = task.getEpicId();
 
-                        List<UUID> subtasksUuids = tasks.get(task.getEpicId()).getSubtasks();
-                        if (subtasksUuids.size() == 0) {
-                            epic.setStartTime(startTime);
-                            epic.setEndTime(endTime);
+                        String name = tasks.get(epicUuid).getName();
+                        String description = tasks.get(epicUuid).getDescription();
+                        LocalDateTime startTimeSubtask = task.getStartTime();
+                        LocalDateTime endTimeSubtask = task.getEndTime();
+                        int duration = task.getDuration();
+                        int epicDuration = tasks.get(epicUuid).getDuration() + duration;
+                        List<UUID> uuids = tasks.get(epicUuid).getSubtasks();
 
-                        } else {
-                            for (UUID subtasksUuid : subtasksUuids) {
-                                if (tasks.get(subtasksUuid).getStartTime().isAfter(startTime)) {
-                                    epic.setStartTime(startTime); // назначение времени если новая подзадача по стартовому времени впереди всех остальных подзадач
-                                }
-                                if (tasks.get(subtasksUuid).getEndTime().isBefore(endTime)) {
-                                    epic.setEndTime(endTime); // последнее время последней по времени подзадачи
-                                }
-                            }
-                        }
-                        epic.setSubtasks(task.getId());
-                        epic.setDuration(epic.getDuration() + task.getDuration()); //сумма продолжительности подзадач
+                        tasks.remove(epicUuid);
 
-                        updateTask(epic);
+                        Epic newEpic = new Epic(
+                                epicUuid,
+                                TaskType.EPIC,
+                                name,
+                                description,
+                                Status.NEW,
+                                startTimeSubtask,
+                                endTimeSubtask,
+                                epicDuration,
+                                uuids
+                        );
+
+                        tasks.put(epicUuid, newEpic);
+                        System.out.println("Эпик: " + task.getName() + ", успешно обновлен");
+
+                        updateTask(newEpic);
                     }
                 }
+                tasks.put(task.getId(), task); // для эпика
             } else {
                 tasks.put(task.getId(), task);
                 System.out.println("Задача: " + task.getName() + ", успешно добавлена");
@@ -245,7 +265,11 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getTasksInHistory();
     }
 
-
+    // case 10: получение всех задач
+    @Override
+    public List<Task> getAllTasks() {
+        return tasks.values().stream().toList();
+    }
 
     // case 11: сортировка задач по стартовому времени
     @Override

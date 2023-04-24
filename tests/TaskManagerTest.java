@@ -1,4 +1,4 @@
-import main.java.intefaces.TaskManager;
+import main.java.intefaces.TasksManager;
 import main.java.managers.FileBackedTasksManager;
 import main.java.service.Status;
 import main.java.service.TaskType;
@@ -17,7 +17,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class TaskManagerTest<T extends TaskManager> {
+abstract class TaskManagerTest<T extends TasksManager> {
 
     protected T taskManager;
 
@@ -63,8 +63,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
             "Эпик1",
             "Переезд",
             Status.NEW,
-            LocalDateTime.parse("2000-01-01T02:00:00"),
-            0,
             subtasks
     );
 
@@ -74,8 +72,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
             "Эпик1",
             "Переезд",
             Status.NEW,
-            LocalDateTime.parse("2000-01-01T02:00:00"),
-            0,
             subtasks
     );
 
@@ -109,10 +105,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
     // 1) все в порядке, задача достается,
     @BeforeEach
     void createFirst() {
-        fileBackedTasksManager.addNewTask(task);
-        fileBackedTasksManager.addNewTask(epic);
+        fileBackedTasksManager.addTask(task);
+        fileBackedTasksManager.addTask(epic);
         subtask.setEpicId(epic.getId());
-        fileBackedTasksManager.addNewTask(subtask);
+        fileBackedTasksManager.addTask(subtask);
 //        epic.setSubtasks(subtask.getId());
     }
 
@@ -152,7 +148,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         System.setOut(new PrintStream(outContent));
 
         task2.setStartTime(testDateTimeTask); // начальное время попадает в отрезок времени task
-        fileBackedTasksManager.addNewTask(task2);
+        fileBackedTasksManager.addTask(task2);
 
         String expectedOutput = "Для задачи: " + task2.getName() + ", нужно  другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -164,7 +160,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         task2.setStartTime(testDateTimeTask.minusMinutes(2)); // конечное время попадает в отрезок времени task
         task2.setDuration(50);
-        fileBackedTasksManager.addNewTask(task2);
+        fileBackedTasksManager.addTask(task2);
 
         String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно  другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -178,7 +174,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         System.setOut(new PrintStream(outContent));
 
         task2.setStartTime(testDateTimeTask.minusMinutes(1));
-        fileBackedTasksManager.addNewTask(task2);
+        fileBackedTasksManager.addTask(task2);
 
         String expectedOutput = "Для задачи: " + task2.getName() + ", нужно  другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -190,7 +186,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         task2.setStartTime(testDateTimeTask.minusMinutes(10));
         task2.setDuration(49); // совпадает с конечным временем на .equals
-        fileBackedTasksManager.addNewTask(task2);
+        fileBackedTasksManager.addTask(task2);
 
         String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно  другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -205,7 +201,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         task2.setStartTime(testDateTimeTask);
         task2.setDuration(48);
-        fileBackedTasksManager.addNewTask(task2);
+        fileBackedTasksManager.addTask(task2);
 
         String expectedOutput = "Для задачи: " + task2.getName() + ", нужно  другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -219,7 +215,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         System.setOut(new PrintStream(outContent));
 
         subtask2.setStartTime(testDateTimeTask); // начальное время попадает в отрезок времени task
-        fileBackedTasksManager.addNewTask(subtask2);
+        fileBackedTasksManager.addTask(subtask2);
 
         String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно  другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -231,7 +227,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         subtask2.setStartTime(testDateTimeTask.minusMinutes(2)); // конечное время попадает в отрезок времени task
         subtask2.setDuration(50);
-        fileBackedTasksManager.addNewTask(subtask2);
+        fileBackedTasksManager.addTask(subtask2);
 
         String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно  другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -245,7 +241,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         System.setOut(new PrintStream(outContent));
 
         subtask2.setStartTime(testDateTimeTask.minusMinutes(1));
-        fileBackedTasksManager.addNewTask(subtask2);
+        fileBackedTasksManager.addTask(subtask2);
 
         String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно  другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -257,7 +253,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         subtask2.setStartTime(testDateTimeTask.minusMinutes(10));
         subtask2.setDuration(49); // совпадает с конечным временем на .equals
-        fileBackedTasksManager.addNewTask(subtask2);
+        fileBackedTasksManager.addTask(subtask2);
 
         String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно  другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -272,7 +268,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
         subtask2.setStartTime(testDateTimeTask);
         subtask2.setDuration(48);
-        fileBackedTasksManager.addNewTask(subtask2);
+        fileBackedTasksManager.addTask(subtask2);
 
         String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно  другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -540,10 +536,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void testCase11GetPrioritizedTasksWithStandardCondition() { // a. Со стандартным поведением. (из ТЗ)
         clearHistory();
-        fileBackedTasksManager.addNewTask(task);
-        fileBackedTasksManager.addNewTask(epic);
+        fileBackedTasksManager.addTask(task);
+        fileBackedTasksManager.addTask(epic);
         subtask.setEpicId(epic.getId());
-        fileBackedTasksManager.addNewTask(subtask);
+        fileBackedTasksManager.addTask(subtask);
 
         boolean flag = false;
         List<Task> tasks = new ArrayList<>(fileBackedTasksManager.getPrioritizedTasks());

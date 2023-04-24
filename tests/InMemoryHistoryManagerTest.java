@@ -1,5 +1,3 @@
-package main.java.tests;
-
 import main.java.managers.InMemoryHistoryManager;
 import main.java.service.Status;
 import main.java.service.TaskType;
@@ -97,8 +95,6 @@ public class InMemoryHistoryManagerTest {
                 "Переезд",
                 "Переезд",
                 Status.NEW,
-                startTimeTestEpic1,
-                20,
                 subtasksList
         );
         inMemoryHistoryManager.add(epic1);

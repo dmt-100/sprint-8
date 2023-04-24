@@ -20,8 +20,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
     public static File file = new File(saveTasksFilePath);
 
+    private String history;
+
+    public String getHistoryLastString() {
+        return history;
+    }
+
     public FileBackedTasksManager(File file) {
         FileBackedTasksManager.file = file;
+    }
+
+    public FileBackedTasksManager() {
     }
 
     private static FileBackedTasksManager loadFromFile(File file) {
@@ -32,6 +41,35 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             throw new ManagerSaveException("Файл с состоянием таск менеджера не найден или поврежден");
         }
         return manager;
+    }
+
+
+    private void save() {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+
+            out.write("id,type,name,description,status,startTime,endTime,duration,epic\n");
+
+            for (Task task : getTasks().values()) {
+
+                out.write(task.toCsvFormat() + "\n");
+
+            }
+            out.write("\n"); // пустая строка после задач
+            var lastLine = historyToString(getHistoryManager());
+            if (!getTasks().isEmpty()) {
+
+                out.write(lastLine);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ManagerSaveException("файл не найден");
+        }
+    }
+
+    private static String historyToString(HistoryManager manager) {
+        return manager.getTasksInHistory().stream()
+                .map(task -> task.getId().toString()).collect(Collectors.joining(","));
     }
 
     // метод возвращает последнюю строку с просмотренными задачами из файла
@@ -52,28 +90,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             return listString;
         }
         return listString;
-    }
-
-    private void save() {
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            out.write("id,type,name,description,status,startTime,endTime,duration,epic\n");
-            for (Task task : getTasks().values()) {
-                out.write(task.toCsvFormat() + "\n");
-            }
-            out.write("\n"); // пустая строка после задач
-            var lastLine = historyToString(getHistoryManager());
-            if (!getTasks().isEmpty()) {
-                out.write(lastLine);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ManagerSaveException("файл не найден");
-        }
-    }
-
-    private static String historyToString(HistoryManager manager) {
-        return manager.getTasksInHistory().stream()
-                .map(task -> task.getId().toString()).collect(Collectors.joining(","));
     }
 
     // ТЗ-6. Напишите метод создания задачи из строки
@@ -123,6 +139,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         epic = new Epic(id, taskType, name, description, status, startTime, endTime, duration, list);
                         epicList.add(epic);
                     }
+//                } else if (line.get(1).equals(TaskType.EPIC.toString())) {
+//                        epic = new Epic(id, taskType, name, description, status, startTime, endTime, duration, list);
+//                        epicList.add(epic);
+//                    }
 
                     if (line.get(1).equals(TaskType.SUBTASK.toString())) {
                         subtask = new Subtask(id, taskType, name, description, status, startTime, endTime, duration, epicId);
@@ -202,8 +222,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 // переопределенные методы InMemoryTaskManager
     @Override
-    public void addNewTask(Task task) { // добавление
-        super.addNewTask(task);
+    public void addTask(Task task) { // добавление
+        super.addTask(task);
         save();
     }
 
@@ -258,6 +278,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         List<Task> history = super.getHistory();
         save();
         return history;
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        List<Task> tasks = super.getAllTasks();
+        save();
+        return tasks;
     }
 
 }

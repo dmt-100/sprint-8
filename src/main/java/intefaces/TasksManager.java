@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public interface TaskManager {
-    void addNewTask(Task task);
+public interface TasksManager {
+    void addTask(Task task);
 
     List<Task> getAllTasksByTaskType(TaskType taskType);
 
@@ -30,6 +30,9 @@ public interface TaskManager {
     List<Task> getHistory();
 
     Map<UUID, Task> getTasks();
+
+    // case 10: получение всех задач
+    List<Task> getAllTasks();
 
     void prioritizeTasks();
 

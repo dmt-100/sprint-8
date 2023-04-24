@@ -5,14 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db70d58e-657e-4b76-bf39-64aa292f9562" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/gson_2_9_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/junit_jupiter.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sprint 8.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/adapter/LocalDateTimeAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/server/GsonManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/server/KVServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/intefaces/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/managers/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/Managers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/InMemoryHistoryManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/InMemoryHistoryManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/TaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/TaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +32,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Record" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -29,11 +41,16 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../../libs/gson-2.9.0.jar!/com/google/gson/Gson.class" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Okw3h5KONGE9aVTq33Qx9eHe9P" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -48,26 +65,56 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "jdk.selected.JAVA_MODULE": "corretto-17",
-    "last_directory_selection": "C:/IdeaProjects/YandexPraktikum/Sprint 8/tests",
+    "last_directory_selection": "C:/IdeaProjects/YandexPraktikum/Sprint 8/tests/main/java",
     "last_opened_file_path": "C:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2022.2.3/lib/junit4.jar",
-    "project.structure.last.edited": "Libraries",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="main.java.managers" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\IdeaProjects\YandexPraktikum\Sprint 8\tests" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
+      <recent name="main.java.server" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="main.java.server" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="main.java.server" />
+      <recent name="" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="main.java.Main" />
+      <module name="Sprint 8" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="main.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="All in Sprint 8" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
@@ -76,9 +123,43 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="HttpTaskServerTest.getTasks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
+      <option name="METHOD_NAME" value="getTasks" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InMemoryHistoryManagerTest.testAddRemoveFirstTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="InMemoryHistoryManagerTest" />
+      <option name="METHOD_NAME" value="testAddRemoveFirstTask" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InMemoryHistoryManagerTest.testGetTasksInHistoryWithDoubleTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="InMemoryHistoryManagerTest" />
+      <option name="METHOD_NAME" value="testGetTasksInHistoryWithDoubleTask" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.HttpTaskServerTest.getTasks" />
         <item itemvalue="JUnit.All in Sprint 8" />
+        <item itemvalue="JUnit.InMemoryHistoryManagerTest.testGetTasksInHistoryWithDoubleTask" />
+        <item itemvalue="JUnit.InMemoryHistoryManagerTest.testAddRemoveFirstTask" />
       </list>
     </recent_temporary>
   </component>
@@ -103,5 +184,34 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/InMemoryHistoryManagerTest.java</url>
+          <line>275</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="main.java.managers.FileBackedTasksManager" memberName="prioritizedTasks" />
+        <PinnedItemInfo parentTag="jdk.internal.net.http.HttpResponseImpl" memberName="version" />
+        <PinnedItemInfo parentTag="java.lang.Module" memberName="loader" />
+      </pinned-members>
+    </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="JUnit">
+        <watch expression="((Class)userType).genericInfo.tree" custom="java.lang.Class" />
+        <watch expression="((HashMap)((FileBackedTasksManager)((HttpTaskServer)this).fileBackedTaskManager).tasks).entrySet().toArray()[1]" custom="main.java.server.HttpTaskServer,main.java.managers.FileBackedTasksManager,java.util.HashMap" />
+        <watch expression="gson" language="JAVA" />
+        <watch expression="((HashMap.Node)((HashMap)fileBackedTasksManager.tasks).entrySet().toArray()[1]).getValue()" custom="java.util.HashMap.Node,java.util.HashMap" />
+        <watch expression="((HashMap)tasks).entrySet().toArray()[2]" custom="java.util.HashMap" />
+        <watch expression="((HashMap.Node)((HashMap)((FileBackedTasksManager)taskServer.fileBackedTaskManager).tasks).entrySet().toArray()[2]).getValue()" custom="main.java.managers.FileBackedTasksManager,java.util.HashMap.Node,java.util.HashMap" />
+        <watch expression="taskServer.fileBackedTaskManager" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

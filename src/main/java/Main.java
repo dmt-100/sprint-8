@@ -1,10 +1,14 @@
 package main.java;
 
 import main.java.managers.FileBackedTasksManager;
+import main.java.managers.HttpTaskManager;
+import main.java.server.KVServer;
 import main.java.service.*;
 import main.java.tasks.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +19,13 @@ public class Main {
     private static final String sep = File.separator;
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
     private static final File file = new File(saveTasksFilePath);
+    private static final URI BASE_URL = URI.create("http://localhost:8078/");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+//        new KVServer().start();
+
+        HttpTaskManager httpTaskManager = new HttpTaskManager(BASE_URL);
         Scanner scanner = new Scanner(System.in);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
 
@@ -43,10 +52,7 @@ public class Main {
                 50
         );
 
-
         List<UUID> subtasksList = new ArrayList<>();
-
-
         Epic epic1 = new Epic(
                 epicUuid,
                 TaskType.EPIC,
@@ -63,30 +69,8 @@ public class Main {
                 "Переезд2",
                 "Переезд2",
                 Status.NEW,
-                dateTimeTestEpic1,
-                50,
                 subtasksList
         );
-
-//        Subtask subtask1 = new Subtask(
-//                TaskType.SUBTASK,
-//                "Подзадача1",
-//                "Собрать коробки",
-//                Status.NEW,
-//                dateTimeTestSubtask1,
-//                50,
-//                epicUuid
-//        );
-//
-//        Subtask subtask2 = new Subtask(
-//                TaskType.SUBTASK,
-//                "Подзадача2",
-//                "Упаковать кошку",
-//                Status.NEW,
-//                dateTimeTestSubtask2,
-//                15,
-//                epicUuid
-//        );
 
 
         boolean menu = true;
@@ -100,7 +84,7 @@ public class Main {
                     int userInputCase1 = scanner.nextInt();
                     switch (userInputCase1) {
                         case 1:
-                            fileBackedTasksManager.addNewTask(new Task(
+                            fileBackedTasksManager.addTask(new Task(
                                     TaskType.TASK,
                                     "Переезд1",
                                     "Собрать коробки",
@@ -108,7 +92,7 @@ public class Main {
                                     dateTimeTestTask1,
                                     50
                             ));
-                            fileBackedTasksManager.addNewTask(new Task(
+                            fileBackedTasksManager.addTask(new Task(
                                     TaskType.TASK,
                                     "Переезд2",
                                     "Упаковать кошку",
@@ -116,7 +100,7 @@ public class Main {
                                     dateTimeTestTask2,
                                     5
                             ));
-                            fileBackedTasksManager.addNewTask(new Task(
+                            fileBackedTasksManager.addTask(new Task(
                                     TaskType.TASK,
                                     "Переезд3",
                                     "Собрать коробки",
@@ -124,7 +108,7 @@ public class Main {
                                     dateTimeTestTask3,
                                     50
                             ));
-                            fileBackedTasksManager.addNewTask(new Task(
+                            fileBackedTasksManager.addTask(new Task(
                                     TaskType.TASK,
                                     "Переезд4",
                                     "Упаковать кошку",
@@ -134,7 +118,7 @@ public class Main {
                             ));
                             break;
                         case 2:
-                            fileBackedTasksManager.addNewTask(epic1);
+                            fileBackedTasksManager.addTask(epic1);
                             break;
                         case 3:
 //                            System.out.println("К какому эпику будет относиться ваша задача?");
@@ -159,8 +143,8 @@ public class Main {
                                     15,
                                     fileBackedTasksManager.getTask(epic1.getId()).getId()
                             );
-                            fileBackedTasksManager.addNewTask(subtask1);
-                            fileBackedTasksManager.addNewTask(subtask2);
+                            fileBackedTasksManager.addTask(subtask1);
+                            fileBackedTasksManager.addTask(subtask2);
                             break;
                     }
                     break;
@@ -270,12 +254,17 @@ public class Main {
                     fileBackedTasksManager.getHistory().forEach(System.out::println);
                     break;
 
-                case 10: // Сохранить в файл
+                case 10: // Получить все задачи (список)
 
                     break;
 
                 case 11: // сортировка по стартовому времени
                     fileBackedTasksManager.getPrioritizedTasks();
+                    break;
+
+                case 12: // сортировка по стартовому времени
+                    httpTaskManager.getFileBackedTaskManager();
+
                     break;
 
                 case 0: // Выход
@@ -295,8 +284,9 @@ public class Main {
         System.out.println("7 - Изменить статус задачи");
         System.out.println("8 - Получение списка всех подзадач определённого эпика");
         System.out.println("9 - Информация по просмотрам задач");
-        System.out.println("10 - Сохранить задачи");
+        System.out.println("10 - Посмотреть все задачи");
         System.out.println("11 - Сортировать задачи по началу времени");
+        System.out.println("12 - Тестирования httpTaskManager");
 
         System.out.println("0 - Выход");
     }
