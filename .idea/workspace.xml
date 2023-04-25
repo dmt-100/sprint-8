@@ -5,24 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db70d58e-657e-4b76-bf39-64aa292f9562" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/adapter/LocalDateTimeAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/GsonManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/KVServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/intefaces/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/Managers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/InMemoryHistoryManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/InMemoryHistoryManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/TaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/TaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,13 +182,25 @@
           <line>275</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
+          <line>270</line>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
+          <line>122</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
+        <PinnedItemInfo parentTag="main.java.server.KVTaskClient" memberName="API_TOKEN" />
         <PinnedItemInfo parentTag="main.java.managers.FileBackedTasksManager" memberName="prioritizedTasks" />
         <PinnedItemInfo parentTag="jdk.internal.net.http.HttpResponseImpl" memberName="version" />
         <PinnedItemInfo parentTag="java.lang.Module" memberName="loader" />
+        <PinnedItemInfo parentTag="main.java.managers.HttpTaskManager" memberName="client" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
@@ -213,5 +214,10 @@
         <watch expression="taskServer.fileBackedTaskManager" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Sprint_8$Main.ic" NAME="Main Coverage Results" MODIFIED="1682381609390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>main.java.*</FILTER>
+    </SUITE>
   </component>
 </project>

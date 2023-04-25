@@ -4,6 +4,7 @@ import main.java.service.Status;
 import main.java.service.TaskType;
 import main.java.tasks.Task;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,5 +38,8 @@ public interface TasksManager {
     void prioritizeTasks();
 
     List<Task> getPrioritizedTasks();
+
+// -------------- HttpTaskManager --------------
+    public void test() throws IOException, InterruptedException;
 
 }

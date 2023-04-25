@@ -7,6 +7,7 @@ import main.java.service.TaskType;
 import main.java.tasks.Epic;
 import main.java.tasks.Task;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -296,6 +297,11 @@ public class InMemoryTaskManager implements TasksManager {
     public List<Task> getPrioritizedTasks() {
         prioritizeTasks();
         return prioritizedTasks;
+    }
+
+    @Override
+    public void test() throws IOException, InterruptedException {
+
     }
 
     public Map<UUID, Task> getTasks() {

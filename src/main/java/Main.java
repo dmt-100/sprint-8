@@ -1,7 +1,9 @@
 package main.java;
 
+import main.java.intefaces.TasksManager;
 import main.java.managers.FileBackedTasksManager;
 import main.java.managers.HttpTaskManager;
+import main.java.managers.Managers;
 import main.java.server.KVServer;
 import main.java.service.*;
 import main.java.tasks.*;
@@ -19,15 +21,16 @@ public class Main {
     private static final String sep = File.separator;
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
     private static final File file = new File(saveTasksFilePath);
-    private static final URI BASE_URL = URI.create("http://localhost:8078/");
+
+
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
 //        new KVServer().start();
 
-        HttpTaskManager httpTaskManager = new HttpTaskManager(BASE_URL);
         Scanner scanner = new Scanner(System.in);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+        HttpTaskManager httpTaskManager = Managers.getDefaultHttpTaskManager();
 
         // для тестов на пересечение
         LocalDateTime dateTimeTestTask1 = LocalDateTime.parse("2000-01-01T01:00:00");
@@ -56,7 +59,7 @@ public class Main {
         Epic epic1 = new Epic(
                 epicUuid,
                 TaskType.EPIC,
-                "ПереездЭпик",
+                "Эпик1",
                 "Переезд",
                 Status.NEW,
                 dateTimeTestEpic1,
@@ -66,7 +69,7 @@ public class Main {
 
         Epic epic2 = new Epic(
                 TaskType.EPIC,
-                "Переезд2",
+                "Эпик2",
                 "Переезд2",
                 Status.NEW,
                 subtasksList
@@ -84,17 +87,18 @@ public class Main {
                     int userInputCase1 = scanner.nextInt();
                     switch (userInputCase1) {
                         case 1:
-                            fileBackedTasksManager.addTask(new Task(
+                            httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Переезд1",
+                                    "Задача1",
                                     "Собрать коробки",
                                     Status.NEW,
                                     dateTimeTestTask1,
                                     50
                             ));
+
                             fileBackedTasksManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Переезд2",
+                                    "Задача2",
                                     "Упаковать кошку",
                                     Status.NEW,
                                     dateTimeTestTask2,
@@ -102,7 +106,7 @@ public class Main {
                             ));
                             fileBackedTasksManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Переезд3",
+                                    "Задача3",
                                     "Собрать коробки",
                                     Status.NEW,
                                     dateTimeTestTask3,
@@ -110,7 +114,7 @@ public class Main {
                             ));
                             fileBackedTasksManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Переезд4",
+                                    "Задача4",
                                     "Упаковать кошку",
                                     Status.NEW,
                                     dateTimeTestTask4,
@@ -131,7 +135,7 @@ public class Main {
                                     Status.NEW,
                                     dateTimeTestSubtask1,
                                     50,
-                                    fileBackedTasksManager.getTask(epic1.getId()).getId()
+                                    fileBackedTasksManager.getTasks().get(epic1.getId()).getId()
                             );
 
                             Subtask subtask2 = new Subtask(
@@ -141,7 +145,7 @@ public class Main {
                                     Status.NEW,
                                     dateTimeTestSubtask2,
                                     15,
-                                    fileBackedTasksManager.getTask(epic1.getId()).getId()
+                                    fileBackedTasksManager.getTasks().get(epic1.getId()).getId()
                             );
                             fileBackedTasksManager.addTask(subtask1);
                             fileBackedTasksManager.addTask(subtask2);
@@ -263,7 +267,8 @@ public class Main {
                     break;
 
                 case 12: // сортировка по стартовому времени
-                    httpTaskManager.getFileBackedTaskManager();
+                    httpTaskManager.setHttpTaskManager(httpTaskManager);
+                    httpTaskManager.test();
 
                     break;
 
