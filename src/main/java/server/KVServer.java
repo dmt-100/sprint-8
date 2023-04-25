@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -43,38 +44,26 @@ public class KVServer {
 Для начальной отладки можно делать запросы без авторизации, используя код DEBUG.
  */
     // Вопрос "это метод, который отвечает за получение данных." почему тогда void??
-    private void load(HttpExchange exchange) throws IOException {
+    private void load(HttpExchange exchange) throws IOException { //это метод, который отвечает за получение данных.
         // TODO Добавьте получение значения по ключу
         try {
-            System.out.println("\n/load");
-            if (!hasAuth(exchange)) {
-                System.out.println("Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
-                exchange.sendResponseHeaders(403, 0);
-                return;
-            }
-            if ("GET".equals(exchange.getRequestMethod())) {
-                String key = exchange.getRequestURI().getPath().substring("/load/".length());
-                if (key.isEmpty()) {
-                    System.out.println("!400: /load/{key}");
-                    exchange.sendResponseHeaders(400, 0);
-                    return;
-                }
-                String value = readBody(exchange);
-                if (value.isEmpty()) {
-                    System.out.println("!400");
-                    exchange.sendResponseHeaders(400, 0);
-                    return;
+            String path = exchange.getRequestURI().getPath();
+            String uri = String.valueOf(exchange.getRequestURI());
+            System.out.println("\n/load/getTasks");
+
+//            int lastIndex = uri.lastIndexOf('/');
+//            String type = uri.substring(lastIndex + 1).toUpperCase();
+
+            if ("DEBUG".equals(exchange.getRequestMethod())) {
+                if (Pattern.matches("^/tasks/load/getTasks$", path)) { // к примеру получить все задачи
+                    // ???
                 }
 //------------------------------------
                 try (OutputStream os = exchange.getResponseBody()) {
                     os.write(apiToken.getBytes());
                 }
 //------------------------------------
-                System.out.println("Значение для ключа " + key + " успешно загружено!");
-                exchange.sendResponseHeaders(200, 0);
-            } else {
-                System.out.println("/load ждёт POST-запрос, а получил: " + exchange.getRequestMethod());
-                exchange.sendResponseHeaders(405, 0);
+
             }
         } finally {
             exchange.close();
@@ -98,13 +87,17 @@ public class KVServer {
                     h.sendResponseHeaders(400, 0);
                     return;
                 }
+
                 String value = readBody(h);
+
                 if (value.isEmpty()) {
                     System.out.println("Value для сохранения пустой. value указывается в теле запроса");
                     h.sendResponseHeaders(400, 0);
                     return;
                 }
+
                 data.put(key, value);
+
                 System.out.println("Значение для ключа " + key + " успешно обновлено!");
                 h.sendResponseHeaders(200, 0);
             } else {

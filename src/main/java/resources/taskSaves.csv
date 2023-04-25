@@ -1,5 +1,2 @@
 id,type,name,description,status,startTime,endTime,duration,epic
-efdfe346-7593-4efe-b26b-ec8f45e979d8,TASK,Задача2,Упаковать кошку,NEW,2000-01-01T02:00,2000-01-01T02:05,5,
-12c30453-a487-4ea3-84ef-c05541be8ee6,TASK,Задача3,Собрать коробки,NEW,2000-01-01T03:00,2000-01-01T03:50,50,
-da862e81-dc41-4ea1-9a9f-ca5b2e2172de,TASK,Задача4,Упаковать кошку,NEW,2000-01-01T04:00,2000-01-01T04:05,5,
 

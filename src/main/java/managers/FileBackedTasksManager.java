@@ -20,12 +20,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
     public static File file = new File(saveTasksFilePath);
 
-    private String history;
-
-    public String getHistoryLastString() {
-        return history;
-    }
-
     public FileBackedTasksManager(File file) {
         FileBackedTasksManager.file = file;
     }

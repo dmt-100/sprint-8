@@ -7,11 +7,15 @@
     <list default="true" id="db70d58e-657e-4b76-bf39-64aa292f9562" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/Managers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/GsonManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/GsonManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/KVServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/KVServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,53 +94,51 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="main.java.Main" />
-      <module name="Sprint 8" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="main.java.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="All in Sprint 8" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Sprint 8" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HttpTaskServerTest.getTasks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.HttpTaskServerTest.getHistory">
+    <configuration name="HttpTaskServerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
-      <option name="METHOD_NAME" value="getTasks" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpTaskServerTest.getHistory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
+      <option name="METHOD_NAME" value="getHistory" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InMemoryHistoryManagerTest.testAddRemoveFirstTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HttpTaskServerTest.removeAllTasksByTaskType_EPIC" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="InMemoryHistoryManagerTest" />
-      <option name="METHOD_NAME" value="testAddRemoveFirstTask" />
+      <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
+      <option name="METHOD_NAME" value="removeAllTasksByTaskType_EPIC" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InMemoryHistoryManagerTest.testGetTasksInHistoryWithDoubleTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HttpTaskServerTest.removeAllTasksByTaskType_SUBTASK" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="InMemoryHistoryManagerTest" />
-      <option name="METHOD_NAME" value="testGetTasksInHistoryWithDoubleTask" />
+      <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
+      <option name="METHOD_NAME" value="removeAllTasksByTaskType_SUBTASK" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpTaskServerTest.removeAllTasksByTaskType_TASK" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
+      <option name="METHOD_NAME" value="removeAllTasksByTaskType_TASK" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -144,11 +146,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.HttpTaskServerTest.getTasks" />
-        <item itemvalue="JUnit.All in Sprint 8" />
-        <item itemvalue="JUnit.InMemoryHistoryManagerTest.testGetTasksInHistoryWithDoubleTask" />
-        <item itemvalue="JUnit.InMemoryHistoryManagerTest.testAddRemoveFirstTask" />
+        <item itemvalue="JUnit.HttpTaskServerTest.getHistory" />
+        <item itemvalue="JUnit.HttpTaskServerTest" />
+        <item itemvalue="JUnit.HttpTaskServerTest.removeAllTasksByTaskType_TASK" />
+        <item itemvalue="JUnit.HttpTaskServerTest.removeAllTasksByTaskType_EPIC" />
+        <item itemvalue="JUnit.HttpTaskServerTest.removeAllTasksByTaskType_SUBTASK" />
       </list>
     </recent_temporary>
   </component>
@@ -191,6 +193,21 @@
           <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
           <line>122</line>
           <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/server/KVServer.java</url>
+          <line>115</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java</url>
+          <line>134</line>
+          <option name="timeStamp" value="137" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -10,6 +10,7 @@ public class GsonManager {
 
     public static Gson getGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.serializeNulls();
         gsonBuilder.setPrettyPrinting();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         return gsonBuilder.create();

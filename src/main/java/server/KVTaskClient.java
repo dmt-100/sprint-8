@@ -31,7 +31,7 @@ public class KVTaskClient {
         Хранить отдельные задачи под ключами их id не совсем экономно с точки зрения трафика и времени получения данных.
      */
 
-    KVServer kvServer = new KVServer();
+    KVServer kvServer;
     HttpClient client = HttpClient.newHttpClient();
     private final Gson gson = Managers.getGson();
     private String API_TOKEN;
@@ -41,7 +41,7 @@ public class KVTaskClient {
 
     public KVTaskClient(URI uri) throws IOException, InterruptedException {
         BASE_URL = uri;
-        kvServer.start();
+        new KVServer().start();
     }
 
 // ТЗ-8 put должен сохранять состояние менеджера задач через запрос POST /save/<ключ>?API_TOKEN=

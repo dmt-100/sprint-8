@@ -26,8 +26,7 @@ public abstract class Managers {
         return GsonManager.getGson();
     }
 
-    // ТЗ-8
-    public static HttpTaskManager getDefaultHttpTaskManager() throws IOException, InterruptedException {
+    public static HttpTaskManager getDefault() throws IOException, InterruptedException {
         return new HttpTaskManager(BASE_URL);
     }
 }

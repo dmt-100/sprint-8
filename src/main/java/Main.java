@@ -30,7 +30,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-        HttpTaskManager httpTaskManager = Managers.getDefaultHttpTaskManager();
+        HttpTaskManager httpTaskManager = Managers.getDefault();
 
         // для тестов на пересечение
         LocalDateTime dateTimeTestTask1 = LocalDateTime.parse("2000-01-01T01:00:00");
@@ -96,7 +96,7 @@ public class Main {
                                     50
                             ));
 
-                            fileBackedTasksManager.addTask(new Task(
+                            httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
                                     "Задача2",
                                     "Упаковать кошку",
@@ -104,7 +104,7 @@ public class Main {
                                     dateTimeTestTask2,
                                     5
                             ));
-                            fileBackedTasksManager.addTask(new Task(
+                            httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
                                     "Задача3",
                                     "Собрать коробки",
@@ -112,7 +112,7 @@ public class Main {
                                     dateTimeTestTask3,
                                     50
                             ));
-                            fileBackedTasksManager.addTask(new Task(
+                            httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
                                     "Задача4",
                                     "Упаковать кошку",
@@ -122,7 +122,7 @@ public class Main {
                             ));
                             break;
                         case 2:
-                            fileBackedTasksManager.addTask(epic1);
+                            httpTaskManager.addTask(epic1);
                             break;
                         case 3:
 //                            System.out.println("К какому эпику будет относиться ваша задача?");
@@ -135,7 +135,7 @@ public class Main {
                                     Status.NEW,
                                     dateTimeTestSubtask1,
                                     50,
-                                    fileBackedTasksManager.getTasks().get(epic1.getId()).getId()
+                                    httpTaskManager.getTasks().get(epic1.getId()).getId()
                             );
 
                             Subtask subtask2 = new Subtask(
@@ -145,10 +145,10 @@ public class Main {
                                     Status.NEW,
                                     dateTimeTestSubtask2,
                                     15,
-                                    fileBackedTasksManager.getTasks().get(epic1.getId()).getId()
+                                    httpTaskManager.getTasks().get(epic1.getId()).getId()
                             );
-                            fileBackedTasksManager.addTask(subtask1);
-                            fileBackedTasksManager.addTask(subtask2);
+                            httpTaskManager.addTask(subtask1);
+                            httpTaskManager.addTask(subtask2);
                             break;
                     }
                     break;
@@ -160,15 +160,15 @@ public class Main {
                     switch (userInputCase2) {
                         case 1:
                             taskType2 = TaskType.TASK;
-                            System.out.println(fileBackedTasksManager.getAllTasksByTaskType(taskType2));
+                            System.out.println(httpTaskManager.getAllTasksByTaskType(taskType2));
                             break;
                         case 2:
                             taskType2 = TaskType.EPIC;
-                            System.out.println(fileBackedTasksManager.getAllTasksByTaskType(taskType2));
+                            System.out.println(httpTaskManager.getAllTasksByTaskType(taskType2));
                             break;
                         case 3:
                             taskType2 = TaskType.SUBTASK;
-                            System.out.println(fileBackedTasksManager.getAllTasksByTaskType(taskType2));
+                            System.out.println(httpTaskManager.getAllTasksByTaskType(taskType2));
                             break;
                     }
                     break;
@@ -180,15 +180,15 @@ public class Main {
                     switch (userInputCase3) {
                         case 1:
                             taskType3 = TaskType.TASK;
-                            fileBackedTasksManager.removeTasksByTasktype(taskType3);
+                            httpTaskManager.removeTasksByTasktype(taskType3);
                             break;
                         case 2:
                             taskType3 = TaskType.EPIC;
-                            fileBackedTasksManager.removeTasksByTasktype(taskType3);
+                            httpTaskManager.removeTasksByTasktype(taskType3);
                             break;
                         case 3:
                             taskType3 = TaskType.SUBTASK;
-                            fileBackedTasksManager.removeTasksByTasktype(taskType3);
+                            httpTaskManager.removeTasksByTasktype(taskType3);
                             break;
                     }
                     break;
@@ -196,7 +196,7 @@ public class Main {
                 case 4: // получение по id
                     System.out.println("Введите номер идентификатора");
                     UUID taskId = UUID.fromString(scanner.next());
-                    fileBackedTasksManager.getTask(taskId);
+                    httpTaskManager.getTask(taskId);
 
                     break;
 
@@ -208,7 +208,7 @@ public class Main {
                     switch (userInputCase5) {
                         case 1:
                             task1.setDescription("Сказать слова прощания test Case5");
-                            fileBackedTasksManager.updateTask(task1);
+                            httpTaskManager.updateTask(task1);
                             break;
                         case 2:
 
@@ -223,7 +223,7 @@ public class Main {
                 case 6: // Удаление по идентификатору.
                     System.out.println("Введите идентификатор для удаления");
                     UUID id = UUID.fromString(scanner.next());
-                    fileBackedTasksManager.removeTaskById(id);
+                    httpTaskManager.removeTaskById(id);
                     break;
 
                 case 7: // Изменить статус
@@ -243,19 +243,19 @@ public class Main {
                             status = Status.IN_PROGRESS;
                             break;
                     }
-                    fileBackedTasksManager.changeStatusTask(statusId, status);
+                    httpTaskManager.changeStatusTask(statusId, status);
                     break;
 
                 case 8: // Получение списка всех подзадач определённого эпика.
                     System.out.println("Получение списка всех подзадач определённого эпика\n" + "Введите id эпика, чтобы получить его подзадачи:");
                     UUID epicId = UUID.fromString(scanner.next());
-                    fileBackedTasksManager.getSubtasksFromEpic(epicId).forEach(System.out::println);
+                    httpTaskManager.getSubtasksFromEpic(epicId).forEach(System.out::println);
                     break;
 
                 // ТЗ-4
                 case 9: // Информация по просмотрам.
                     System.out.println("Какие задачи были просмотрены:");
-                    fileBackedTasksManager.getHistory().forEach(System.out::println);
+                    httpTaskManager.getHistory().forEach(System.out::println);
                     break;
 
                 case 10: // Получить все задачи (список)
@@ -263,10 +263,10 @@ public class Main {
                     break;
 
                 case 11: // сортировка по стартовому времени
-                    fileBackedTasksManager.getPrioritizedTasks();
+                    httpTaskManager.getPrioritizedTasks();
                     break;
 
-                case 12: // сортировка по стартовому времени
+                case 12: // Тест ТЗ-8
                     httpTaskManager.setHttpTaskManager(httpTaskManager);
                     httpTaskManager.test();
 

@@ -1,7 +1,6 @@
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.java.intefaces.TasksManager;
-import main.java.managers.FileBackedTasksManager;
 import main.java.managers.Managers;
 import main.java.server.HttpTaskServer;
 import main.java.service.Status;
@@ -24,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static main.java.managers.FileBackedTasksManager.file;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -34,7 +32,6 @@ class HttpTaskServerTest {
     HttpTaskServer taskServer = new HttpTaskServer();
     TasksManager fileBackedTasksManager =  taskServer.getFileBackedTaskManager();
     LocalDateTime dateTimeTestTask1 = LocalDateTime.parse("2000-01-01T01:00:00");
-    LocalDateTime dateTimeTestEpic1 = LocalDateTime.parse("2000-01-01T05:00:00");
     LocalDateTime dateTimeTestSubtask1 = LocalDateTime.parse("2000-01-01T06:00:00");
     private Task task1 = new Task(
             TaskType.TASK,
@@ -48,7 +45,7 @@ class HttpTaskServerTest {
     List<UUID> subtasksList = new ArrayList<>();
     Epic epic1 = new Epic(
             TaskType.EPIC,
-            "ПереездЭпик",
+            "Эпик1",
             "Переезд",
             Status.NEW,
             subtasksList
@@ -130,10 +127,11 @@ class HttpTaskServerTest {
     void getTaskById() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         String uuid = String.valueOf(fileBackedTasksManager.getTask(task1.getId()).getId());
-        URI uri = URI.create("http://localhost:8080/tasks/task/?=" + uuid);
+        URI uri = URI.create("http://localhost:8080/tasks/task/?id=" + uuid);
         HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Output of response.body(): " + response.body());
         assertEquals(200, response.statusCode());
 
         Type userType = new TypeToken<Task>() {}.getType();
@@ -147,17 +145,18 @@ class HttpTaskServerTest {
     @Test
     void removeAllTasksByTaskType_TASK() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
-        String epicUuid = String.valueOf(fileBackedTasksManager.getAllTasksByTaskType(TaskType.EPIC).get(0).getId());
-        URI uri = URI.create("http://localhost:8080/tasks/task/?id=" + epicUuid);
+
+        URI uri = URI.create("http://localhost:8080/tasks/task");
         HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Output of response.body(): " + response.body());
         assertEquals(200, response.statusCode());
 
-        Type userType = new TypeToken<Task>() {}.getType();
-        Task actual = gson.fromJson(response.body(), userType);
+        Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
+        List<Task> actual = gson.fromJson(response.body(), userType);
         assertNotNull(actual, "Задачи не возвращаются");
 
-        URI uriToRemove = URI.create("http://localhost:8080/tasks/remove/task");
+        URI uriToRemove = URI.create("http://localhost:8080/tasks/task");
         HttpRequest requestToRemove = HttpRequest.newBuilder().uri(uriToRemove).DELETE().build();
         client.send(requestToRemove, HttpResponse.BodyHandlers.discarding());
 
@@ -172,13 +171,14 @@ class HttpTaskServerTest {
         URI uri = URI.create("http://localhost:8080/tasks/task");
         HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Output of response.body(): " + response.body());
         assertEquals(200, response.statusCode());
 
         Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
         List<Task> actual = gson.fromJson(response.body(), userType);
         assertNotNull(actual, "Задачи не возвращаются");
 
-        URI uriToRemove = URI.create("http://localhost:8080/tasks/remove/epic");
+        URI uriToRemove = URI.create("http://localhost:8080/tasks/epic");
         HttpRequest requestToRemove = HttpRequest.newBuilder().uri(uriToRemove).DELETE().build();
         client.send(requestToRemove, HttpResponse.BodyHandlers.discarding());
 
@@ -192,16 +192,39 @@ class HttpTaskServerTest {
         URI uri = URI.create("http://localhost:8080/tasks/task");
         HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Output of response.body(): " + response.body());
         assertEquals(200, response.statusCode());
 
         Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
         List<Task> actual = gson.fromJson(response.body(), userType);
         assertNotNull(actual, "Задачи не возвращаются");
 
-        URI uriToRemove = URI.create("http://localhost:8080/tasks/remove/subtask");
+        URI uriToRemove = URI.create("http://localhost:8080/tasks/subtask");
         HttpRequest requestToRemove = HttpRequest.newBuilder().uri(uriToRemove).DELETE().build();
         client.send(requestToRemove, HttpResponse.BodyHandlers.discarding());
 
         assertEquals(new ArrayList<>(), fileBackedTasksManager.getAllTasksByTaskType(TaskType.SUBTASK));
+    }
+
+//==================================== History ====================================
+    @Test
+    void getHistory() throws IOException, InterruptedException {
+        fileBackedTasksManager.getTask(task1.getId());
+        fileBackedTasksManager.getTask(subtask1.getId());
+        HttpClient client = HttpClient.newHttpClient();
+
+        URI uri = URI.create("http://localhost:8080/tasks/task");
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, response.statusCode());
+
+        Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
+        List<Task> actual = gson.fromJson(response.body(), userType);
+        assertNotNull(actual, "Задачи не возвращаются");
+
+        URI uri2 = URI.create("http://localhost:8080/tasks/history");
+        HttpRequest request2 = HttpRequest.newBuilder().uri(uri2).GET().build();
+        client.send(request2, HttpResponse.BodyHandlers.ofString());
+
     }
 }

@@ -38,23 +38,39 @@ public class HttpTaskServer {
         try {
             String path = httpExchange.getRequestURI().getPath();
             String uri = String.valueOf(httpExchange.getRequestURI());
+
+//            int lastIndex = 0;
+//            String type = null;
+//            UUID uuid = null;
+//            if (uri.contains("=")) {
+//                lastIndex = uri.lastIndexOf('=');
+//                type = uri.substring(lastIndex + 1);
+//                uuid = UUID.fromString(type);
+//            }
+
+            String[] commands = uri.split("/");
+
             UUID uuid = null;
-            if (uri.contains("-")) {
+            String command = commands[2].toUpperCase();
+            if (uri.contains("id")) {
                 String[] sp = uri.split("=");
                 uuid = UUID.fromString(sp[1]);
             }
-            int lastIndex = uri.lastIndexOf('/');
-            String type = uri.substring(lastIndex + 1).toUpperCase();
 
-            String requestMethod = httpExchange.getRequestMethod();
+            String requestMethod = httpExchange.getRequestMethod() + "_" + command.toUpperCase();
+
+            if (uri.contains("id")) {
+                requestMethod = httpExchange.getRequestMethod() + "_" + command.toUpperCase() + "_ID";
+            }
             switch (requestMethod) {
-                case "GET": {
+                case "GET_TASK": {
                     if (Pattern.matches("^/tasks/task$", path)) {
                         String response = gson.toJson(fileBackedTaskManager.getAllTasks());
                         sendText(httpExchange, response);
-                        return;
                     }
-
+                    break;
+                }
+                case "GET_TASK_ID": {
                     if (Pattern.matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", String.valueOf(uuid))) {
                         String response = gson.toJson(fileBackedTaskManager.getTask(uuid));
                         sendText(httpExchange, response);
@@ -64,34 +80,67 @@ public class HttpTaskServer {
                         OutputStream os = httpExchange.getResponseBody();
                         os.write(response.getBytes());
                     }
-
                     break;
                 }
-                case "DELETE": {
-
+                case "DELETE_TASK_ID": {
                     if (Pattern.matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", String.valueOf(uuid))) {
                         String taskName = fileBackedTaskManager.getTasks().get(uuid).getName();
                         fileBackedTaskManager.removeTaskById(uuid);
                         System.out.println("Задача и назаванием: " + taskName + " удалена.");
                         httpExchange.sendResponseHeaders(200, 0);
-
                     }
-                    if (TaskType.TASK.equals(TaskType.valueOf(type)) ||
-                            TaskType.EPIC.equals(TaskType.valueOf(type)) ||
-                            TaskType.SUBTASK.equals(TaskType.valueOf(type))) {
-                       if (Pattern.matches("^/tasks/remove/" + type.toLowerCase() + "$", path)) {
-                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(type));
-                            System.out.println("Все задачи типа <" + type + "> удалены");
+                    break;
+                }
+                case "DELETE_TASK": {
+                    if (TaskType.TASK.equals(TaskType.valueOf(command))) {
+                        if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
+                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(command));
+                            System.out.println("Все задачи типа <" + command + "> удалены");
                             httpExchange.sendResponseHeaders(200, 0);
                             return;
                         }
-                    }
-
-                    else {
+                    } else {
                         httpExchange.sendResponseHeaders(405, 0);
                     }
                     break;
                 }
+                case "DELETE_EPIC": {
+                    if (TaskType.EPIC.equals(TaskType.valueOf(command))) {
+                        if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
+                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(command));
+                            System.out.println("Все задачи типа <" + command + "> удалены");
+                            httpExchange.sendResponseHeaders(200, 0);
+                            return;
+                        }
+                    } else {
+                        httpExchange.sendResponseHeaders(405, 0);
+                    }
+                    break;
+                }
+                case "DELETE_SUBTASK": {
+                    if (TaskType.SUBTASK.equals(TaskType.valueOf(command))) {
+                        if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
+                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(command));
+                            System.out.println("Все задачи типа <" + command + "> удалены");
+                            httpExchange.sendResponseHeaders(200, 0);
+                            return;
+                        }
+                    } else {
+                        httpExchange.sendResponseHeaders(405, 0);
+                    }
+                    break;
+                }
+                case "GET_HISTORY": {
+                    if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
+                        fileBackedTaskManager.getHistory();
+                        httpExchange.sendResponseHeaders(200, 0);
+                        return;
+                    } else {
+                        httpExchange.sendResponseHeaders(405, 0);
+                    }
+                    break;
+                }
+
                 default: {
                     System.out.println("Ждем GET или DELETE запрос, а получили - " + requestMethod);
                     httpExchange.sendResponseHeaders(405, 0);
@@ -120,7 +169,7 @@ public class HttpTaskServer {
 
     public void stop() {
         httpServer.stop(0);
-        System.out.println("Server stopped on the port " + PORT);
+        System.out.println("----------------------- Server stopped on the port " + PORT + " -----------------------");
     }
 
     private String readText(HttpExchange h) throws IOException {
