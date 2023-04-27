@@ -38,7 +38,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    private void save() {
+    protected void save() {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
 
             out.write("id,type,name,description,status,startTime,endTime,duration,epic\n");

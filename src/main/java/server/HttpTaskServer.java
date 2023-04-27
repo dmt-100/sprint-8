@@ -11,6 +11,7 @@ import main.java.service.TaskType;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,8 @@ public class HttpTaskServer {
 
     public HttpTaskServer() throws IOException {
         gson = Managers.getGson();
-        httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
+        InetSocketAddress socket = new InetSocketAddress(8078);
+        httpServer = HttpServer.create(new InetSocketAddress(socket.getAddress(), PORT), 0);
         httpServer.createContext("/tasks", this::handleTasks);
     }
 
@@ -39,29 +41,21 @@ public class HttpTaskServer {
             String path = httpExchange.getRequestURI().getPath();
             String uri = String.valueOf(httpExchange.getRequestURI());
 
-//            int lastIndex = 0;
-//            String type = null;
-//            UUID uuid = null;
-//            if (uri.contains("=")) {
-//                lastIndex = uri.lastIndexOf('=');
-//                type = uri.substring(lastIndex + 1);
-//                uuid = UUID.fromString(type);
-//            }
-
-            String[] commands = uri.split("/");
+            String[] splitUries = uri.split("/");
 
             UUID uuid = null;
-            String command = commands[2].toUpperCase();
+            String type = splitUries[2].toUpperCase();
             if (uri.contains("id")) {
                 String[] sp = uri.split("=");
                 uuid = UUID.fromString(sp[1]);
             }
 
-            String requestMethod = httpExchange.getRequestMethod() + "_" + command.toUpperCase();
+            String requestMethod = httpExchange.getRequestMethod() + "_" + type.toUpperCase();
 
             if (uri.contains("id")) {
-                requestMethod = httpExchange.getRequestMethod() + "_" + command.toUpperCase() + "_ID";
+                requestMethod = httpExchange.getRequestMethod() + "_" + type.toUpperCase() + "_ID";
             }
+
             switch (requestMethod) {
                 case "GET_TASK": {
                     if (Pattern.matches("^/tasks/task$", path)) {
@@ -92,10 +86,10 @@ public class HttpTaskServer {
                     break;
                 }
                 case "DELETE_TASK": {
-                    if (TaskType.TASK.equals(TaskType.valueOf(command))) {
-                        if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
-                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(command));
-                            System.out.println("Все задачи типа <" + command + "> удалены");
+                    if (TaskType.TASK.equals(TaskType.valueOf(type))) {
+                        if (Pattern.matches("^/tasks/" + type.toLowerCase() + "$", path)) {
+                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(type));
+                            System.out.println("Все задачи типа <" + type + "> удалены");
                             httpExchange.sendResponseHeaders(200, 0);
                             return;
                         }
@@ -105,10 +99,10 @@ public class HttpTaskServer {
                     break;
                 }
                 case "DELETE_EPIC": {
-                    if (TaskType.EPIC.equals(TaskType.valueOf(command))) {
-                        if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
-                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(command));
-                            System.out.println("Все задачи типа <" + command + "> удалены");
+                    if (TaskType.EPIC.equals(TaskType.valueOf(type))) {
+                        if (Pattern.matches("^/tasks/" + type.toLowerCase() + "$", path)) {
+                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(type));
+                            System.out.println("Все задачи типа <" + type + "> удалены");
                             httpExchange.sendResponseHeaders(200, 0);
                             return;
                         }
@@ -118,10 +112,10 @@ public class HttpTaskServer {
                     break;
                 }
                 case "DELETE_SUBTASK": {
-                    if (TaskType.SUBTASK.equals(TaskType.valueOf(command))) {
-                        if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
-                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(command));
-                            System.out.println("Все задачи типа <" + command + "> удалены");
+                    if (TaskType.SUBTASK.equals(TaskType.valueOf(type))) {
+                        if (Pattern.matches("^/tasks/" + type.toLowerCase() + "$", path)) {
+                            fileBackedTaskManager.removeTasksByTasktype(TaskType.valueOf(type));
+                            System.out.println("Все задачи типа <" + type + "> удалены");
                             httpExchange.sendResponseHeaders(200, 0);
                             return;
                         }
@@ -131,7 +125,7 @@ public class HttpTaskServer {
                     break;
                 }
                 case "GET_HISTORY": {
-                    if (Pattern.matches("^/tasks/" + command.toLowerCase() + "$", path)) {
+                    if (Pattern.matches("^/tasks/" + type.toLowerCase() + "$", path)) {
                         fileBackedTaskManager.getHistory();
                         httpExchange.sendResponseHeaders(200, 0);
                         return;

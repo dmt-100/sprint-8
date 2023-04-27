@@ -1,7 +1,6 @@
 package main.java.server;
 
-import com.google.gson.Gson;
-import main.java.managers.Managers;
+import main.java.service.ManagerSaveException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,66 +8,71 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
-/*
-из ТЗ: напишите HTTP-клиент. С его помощью мы переместим хранение состояния менеджера из файлов на отдельный сервер.
- */
+
+// ТЗ-8: напишите HTTP-клиент. С его помощью мы переместим хранение состояния менеджера из файлов на отдельный сервер.
+
 public class KVTaskClient {
-//--------------------------------------------------------------
-/* Добрый день. ТЗ конечно не готово, так как у меня очень смутные представления как вообще должен работать этот класс,
-да и как работает класс KVServer, даже благодаря этому слайду https://i.ibb.co/X3F4Ys8/image.png
-Может быть ТЗ само не так описано в совокупе каких то пробелов в знаниях у меня, но точно нужна какая-то дополнительная помощь
-В пачке посоветовали еще раз переписать ТЗ с начала, что бы лучше понять, но я в этом уже сомневаюсь что поможет
-
-* из-за проблем с gson'ом при вытаскивании эпика (было два поля startTime и Task.startTime), пришлось переделать метод addTask по
-добавлению id для эпика теперь эпик заменяется на новый с новым полем startTime от сабтаска вместо использования сеттеров.
- Там некоторые прошлые тесты надо будет переписать. Для меня сейчас важно понять как работать с API
+    private final String apiToken;
+    private URI uri;
+ /*
+ Из ТЗ-8 "Конструктор принимает URL к серверу хранилища и регистрируется. При регистрации выдаётся токен (API_TOKEN),
+ который нужен при работе с сервером."
+ Вопрос выдается клиенту?
+"Также хорошо было бы сделать final, так как его инициализация будет происходить при вызове метода register в теле конструктора."
+ Что-то я запутался с апи, это ваша фраза в этом классе, идет речь про метод register в классе KVServer?
+ То есть его нужно оттуда как-то достать, вопрос как, и записать в поле клиента? Так как Класс KVServer уже готовый шаблон
+  инициализация апи идет там через System.currentTimeMillis()
+  Пока отправлю ТЗ в таком варианте
 */
-//--------------------------------------------------------------
-    /*
-    из Пачки: Руслан Родионов 12:07
-        Можешь сохранить под ключом А значение В. Такая удалённая мапа. Как и что хранить там решай самостоятельно.
-        Хранить отдельные задачи под ключами их id не совсем экономно с точки зрения трафика и времени получения данных.
-     */
 
-    KVServer kvServer;
-    HttpClient client = HttpClient.newHttpClient();
-    private final Gson gson = Managers.getGson();
-    private String API_TOKEN;
-    private static URI BASE_URL = URI.create("http://localhost:8078/"); // здесь нужно указать URL сервера
-//    HttpRequest request = HttpRequest.newBuilder().uri(BASE_URL).GET().build();
-//    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    public KVTaskClient(URI uri){
+        this.uri = uri;
 
-    public KVTaskClient(URI uri) throws IOException, InterruptedException {
-        BASE_URL = uri;
-        new KVServer().start();
+//        apiToken = register();
     }
 
-// ТЗ-8 put должен сохранять состояние менеджера задач через запрос POST /save/<ключ>?API_TOKEN=
-    public void put(String key, String json) throws IOException, InterruptedException {
-        if (Objects.equals(key, API_TOKEN)) {
-            API_TOKEN = kvServer.getApiToken();
-
-            URI uri = URI.create("http://localhost:8080/load/key/" + API_TOKEN + "?API_TOKEN=" + API_TOKEN);
-
-            var request = HttpRequest.newBuilder().uri(uri).POST(HttpRequest.BodyPublishers.ofString(json)).build();
-            client.send(request, HttpResponse.BodyHandlers.ofString());
+    public void put(String key, String json) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri + "save/+" + key + "?API_TOKEN=" + apiToken))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new ManagerSaveException("Не удалось выполнить запрос. Код статуса: " +
+                        response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new ManagerSaveException("Что-то не так в методе put");
         }
     }
 
-// ТЗ-8: Метод String load(String key) должен возвращать состояние менеджера задач через запрос GET /load/<ключ>?API_TOKEN=
-    String load(String key) throws IOException, InterruptedException {
-        API_TOKEN = kvServer.getApiToken();
-
-//        URI uri = URI.create("http://localhost:8080/load/key/" + API_TOKEN + "?API_TOKEN=" + API_TOKEN);
-        URI uri = URI.create("http://localhost:8080/load/key/" + API_TOKEN + "?API_TOKEN=" + API_TOKEN );
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+    public String load(String key) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri + "save/+" + key + "?API_TOKEN=" + apiToken))
+                .GET()
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new ManagerSaveException("Не удалось выполнить запрос. Код статуса: " +
+                        response.statusCode());
+            } else {
+                return String.valueOf(response);
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new ManagerSaveException("Что-то не так в методе load");
+        }
     }
 
-    public String getAPI_TOKEN() {
-        return API_TOKEN;
-    }
+//    public String register() {
+//        return String.valueOf(java.util.UUID.randomUUID());
+//    }
+
 }

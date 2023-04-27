@@ -16,14 +16,7 @@ import com.sun.net.httpserver.HttpServer;
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
  */
 
-/*
-Из ТЗ: Подсказка: как работает сервер KVServer
-KVServer — это хранилище, где данные хранятся по принципу <ключ-значение>. Он умеет:
-GET /register — регистрировать клиента и выдавать уникальный токен доступа (аутентификации).
-Это нужно, чтобы хранилище могло работать сразу с несколькими клиентами.
-POST /save/<ключ>?API_TOKEN= — сохранять содержимое тела запроса, привязанное к ключу.
-GET /load/<ключ>?API_TOKEN= — возвращать сохранённые значение по ключу.
- */
+
 public class KVServer {
     public static final int PORT = 8078;
     private final String apiToken;
@@ -38,15 +31,45 @@ public class KVServer {
         httpServer.createContext("/load", this::load);
     }
 
-/*
-Вам нужно дописать реализацию запроса load() — это метод, который отвечает за получение данных.
-После этого запустите сервер и проверьте, что получение значения по ключу работает.
-Для начальной отладки можно делать запросы без авторизации, используя код DEBUG.
- */
-    // Вопрос "это метод, который отвечает за получение данных." почему тогда void??
     private void load(HttpExchange exchange) throws IOException { //это метод, который отвечает за получение данных.
-        // TODO Добавьте получение значения по ключу
         try {
+            System.out.println("\n/load");
+            if (!hasAuth(exchange)) {
+                System.out.println("Запрос не авторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
+                exchange.sendResponseHeaders(403, 0);
+                return;
+            }
+
+            if (exchange.getRequestMethod().equals("GET")) {
+                String api = String.valueOf(exchange.getRequestURI());
+                String apiKey = api.substring(api.indexOf("=") + 1);
+
+                if (data.containsKey(apiKey)) {
+                    String responseData = data.get(apiKey);
+
+                    if (responseData != null) {
+                        sendText(exchange, responseData);
+
+                    } else {
+                        exchange.sendResponseHeaders(400, 0);
+                        String response = "400 Bad Request";
+                        OutputStream os = exchange.getResponseBody();
+                        os.write(response.getBytes());
+                    }
+                } else {
+                    exchange.sendResponseHeaders(404, 0);
+                    String response = "404 Not Found";
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response.getBytes());
+                }
+
+            } else {
+                exchange.sendResponseHeaders(405, 0);
+                String response = "405 Method Not Allowed";
+                OutputStream os = exchange.getResponseBody();
+                os.write(response.getBytes());
+            }
+
             String path = exchange.getRequestURI().getPath();
             String uri = String.valueOf(exchange.getRequestURI());
             System.out.println("\n/load/getTasks");
@@ -55,14 +78,7 @@ public class KVServer {
 //            String type = uri.substring(lastIndex + 1).toUpperCase();
 
             if ("DEBUG".equals(exchange.getRequestMethod())) {
-                if (Pattern.matches("^/tasks/load/getTasks$", path)) { // к примеру получить все задачи
-                    // ???
-                }
-//------------------------------------
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write(apiToken.getBytes());
-                }
-//------------------------------------
+
 
             }
         } finally {
@@ -76,7 +92,7 @@ public class KVServer {
         try {
             System.out.println("\n/save");
             if (!hasAuth(h)) {
-                System.out.println("Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
+                System.out.println("Запрос не авторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
                 h.sendResponseHeaders(403, 0);
                 return;
             }
@@ -150,11 +166,25 @@ public class KVServer {
         h.getResponseBody().write(resp);
     }
 
-    public String getApiToken() {
-        return apiToken;
-    }
-
-    public HttpServer getHttpServer() {
-        return httpServer;
-    }
 }
+
+/*
+// ======================================= ПОДСКАЗКИ для меня =======================================
+
+
+
+Из ТЗ: Подсказка: как работает сервер KVServer
+KVServer — это хранилище, где данные хранятся по принципу <ключ-значение>. Он умеет:
+GET /register — регистрировать клиента и выдавать уникальный токен доступа (аутентификации).
+Это нужно, чтобы хранилище могло работать сразу с несколькими клиентами.
+POST /save/<ключ>?API_TOKEN= — сохранять содержимое тела запроса, привязанное к ключу.
+GET /load/<ключ>?API_TOKEN= —
+
+ТЗ-8 Вам нужно дописать реализацию запроса load() — это метод, который отвечает за получение данных.
+После этого запустите сервер и проверьте, что получение значения по ключу работает.
+Для начальной отладки можно делать запросы без авторизации, используя код DEBUG.
+
+
+
+// ==========================================================================================
+ */

@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-//        new KVServer().start();
+        new KVServer().start();
 
         Scanner scanner = new Scanner(System.in);
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
@@ -267,8 +267,7 @@ public class Main {
                     break;
 
                 case 12: // Тест ТЗ-8
-                    httpTaskManager.setHttpTaskManager(httpTaskManager);
-                    httpTaskManager.test();
+                    httpTaskManager.save();
 
                     break;
 
