@@ -268,8 +268,9 @@ public class Main {
                     break;
 
                 case 12: // Тест ТЗ-8
+//                    httpTaskManager.save();
                     httpTaskManager.save();
-
+                    httpTaskManager.getAllTasksByTaskType(TaskType.TASK);
                     break;
 
                 case 0: // Выход

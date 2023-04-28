@@ -12,20 +12,20 @@ import java.net.http.HttpResponse;
 // ТЗ-8: напишите HTTP-клиент. С его помощью мы переместим хранение состояния менеджера из файлов на отдельный сервер.
 
 public class KVTaskClient {
-    private final String key;
+    private final String tokenId;
     private final String uri;
 
 
     public KVTaskClient(URI uri){
         this.uri = String.valueOf(uri);
-        key = register();
+        tokenId = register();
     }
 
     public void put(String key, String json) {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri + "save/" + key + "?API_TOKEN=" + this.key))
+                .uri(URI.create(uri + "save/" + key + "?API_TOKEN=" + this.tokenId))
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         HttpResponse<Void> response;
@@ -44,7 +44,7 @@ public class KVTaskClient {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri + "save/" + key + "?API_TOKEN=" + this.key))
+                .uri(URI.create(uri + "load/" + key + "?API_TOKEN=" + this.tokenId))
                 .GET()
                 .build();
         HttpResponse<String> response;

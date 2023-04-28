@@ -7,6 +7,7 @@ import main.java.server.KVTaskClient;
 import main.java.service.TaskType;
 import main.java.tasks.Task;
 
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,11 +18,10 @@ public class HttpTaskManager extends FileBackedTasksManager implements TasksMana
     private final Gson gson;
     private final KVTaskClient client;
 
-    private final String task = "Tasks";
-    private final String epic = "Epics";
-    private final String subtask = "Subtasks";
-    private final String history = "History";
-    private List<Task> tasks;
+    private  List<Task> tasks;
+    private  List<Task> epics;
+    private  List<Task> subtasks;
+    private  List<Task> history;
 
     public HttpTaskManager(URI url) {
         super();
@@ -32,34 +32,46 @@ public class HttpTaskManager extends FileBackedTasksManager implements TasksMana
     @Override
     public void save() {
 
-        String tasks = gson.toJson(getAllTasks()
+        String tasks = gson.toJson(getTasks().values()
                 .stream()
                 .filter(t -> t.getTaskType().equals(TaskType.TASK))
                 .collect(Collectors.toList()));
         client.put("tasks", gson.toJson(tasks));
 
-        String subtasks = gson.toJson(getAllTasks()
+        String subtasks = gson.toJson(getTasks().values()
                 .stream()
                 .filter(t -> t.getTaskType().equals(TaskType.SUBTASK))
                 .collect(Collectors.toList()));
         client.put("subtasks", gson.toJson(subtasks));
 
-        String epics = gson.toJson(getAllTasks()
+        String epics = gson.toJson(getTasks().values()
                 .stream()
                 .filter(t -> t.getTaskType().equals(TaskType.EPIC))
                 .collect(Collectors.toList()));
         client.put("epics", gson.toJson(epics));
 
-        String history = gson.toJson(getHistory().stream().map(Task::getId).collect(Collectors.toList()));
-        client.put("epics", gson.toJson(history));
+        String history = gson.toJson(getHistoryTasks()
+                .stream()
+                .map(Task::getId)
+                .collect(Collectors.toList()));
+        client.put("history", gson.toJson(history));
 
     }
 
     private void load() {
-        // что должно быть ключом для метода load(String key), в Пачке пишут, что тип задач.
-        String tasks = gson.fromJson(client.load("tasks"),
-                new TypeToken<ArrayList<Task>>() {}.getType());
-        this.tasks = new ArrayList<>(Integer.parseInt(tasks));
+        Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
+        List<Task> tasks;
+        tasks = gson.fromJson(client.load("tasks"), taskType);
+        this.tasks = tasks;
+
+        tasks = gson.fromJson(client.load("subtasks"), taskType);
+        this.subtasks = tasks;
+
+        tasks = gson.fromJson(client.load("epics"), taskType);
+        this.epics = tasks;
+
+        tasks = gson.fromJson(client.load("history"), taskType);
+        this.history = tasks;
     }
 
     @Override
@@ -67,36 +79,6 @@ public class HttpTaskManager extends FileBackedTasksManager implements TasksMana
         load();
         return (List<Task>) tasks.stream().filter(t -> t.getTaskType().equals(taskType));
     }
-
-
-    @Override
-    public List<Task> prioritizeTasks() {
-        load();
-        List<Task> prioritizedTasks;
-        if (tasks.size() > 1) {
-            prioritizedTasks = new ArrayList<>(
-                    tasks.stream()
-                            .filter(t -> (!t.getTaskType().equals(TaskType.EPIC)))
-                            .sorted(Comparator.comparing(Task::getStartTime))
-                            .collect(Collectors.toCollection(ArrayList::new)));
-
-            for (Task prioritizedTask : prioritizedTasks) {
-                System.out.println(prioritizedTask);
-            }
-        } else {
-            prioritizedTasks = null;
-        }
-        return prioritizedTasks;
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        load();
-        List<Task> history = super.getHistory();
-        save();
-        return history;
-    }
-
 
 
 }

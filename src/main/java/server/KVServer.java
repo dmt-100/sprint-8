@@ -8,13 +8,10 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import main.java.service.ManagerSaveException;
-import main.java.tasks.Epic;
-import main.java.tasks.Task;
 
 /**
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
@@ -23,7 +20,7 @@ import main.java.tasks.Task;
 
 public class KVServer {
     public static final int PORT = 8078;
-    private final String key;
+    private final String tokenId;
     private final HttpServer httpServer;
     private final Map<String, String> data = new HashMap<>();
     List<String> tasks;
@@ -32,7 +29,7 @@ public class KVServer {
     List<String> history;
 
     public KVServer() throws IOException {
-        key = generateApiToken();
+        tokenId = generateApiToken();
         httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
         httpServer.createContext("/register", this::register);
         httpServer.createContext("/save", this::save);
@@ -60,8 +57,10 @@ public class KVServer {
                 }
 
                 if (data.containsKey(key)) {
+
                     String responseData = data.get(key);
-                    sendText(exchange, responseData); // *для себя: почему пропустил
+
+                    sendText(exchange, responseData);
 
                 } else {
                     exchange.sendResponseHeaders(404, 0);
@@ -108,7 +107,7 @@ public class KVServer {
 
                 data.put(key, value);
 
-                System.out.println("Значение для ключа " + key + " успешно обновлено!");
+                System.out.println("Значение для ключа <" + key + "> успешно обновлено!");
                 h.sendResponseHeaders(200, 0);
             } else {
                 System.out.println("/save ждёт POST-запрос, а получил: " + h.getRequestMethod());
@@ -123,7 +122,9 @@ public class KVServer {
         try (h) {
             System.out.println("\n/register");
             if ("GET".equals(h.getRequestMethod())) {
-                sendText(h, key);
+
+                sendText(h, tokenId);
+
             } else {
                 System.out.println("/register ждёт GET-запрос, а получил " + h.getRequestMethod());
                 h.sendResponseHeaders(405, 0);
@@ -139,7 +140,7 @@ public class KVServer {
     public void start() {
         System.out.println("Запускаем сервер на порту " + PORT);
         System.out.println("Открой в браузере http://localhost:" + PORT + "/");
-        System.out.println("API_TOKEN: " + key);
+        System.out.println("API_TOKEN: " + tokenId);
         httpServer.start();
     }
 
@@ -149,7 +150,7 @@ public class KVServer {
 
     protected boolean hasAuth(HttpExchange h) {
         String rawQuery = h.getRequestURI().getRawQuery();
-        return rawQuery != null && (rawQuery.contains("API_TOKEN=" + key) || rawQuery.contains("API_TOKEN=DEBUG"));
+        return rawQuery != null && (rawQuery.contains("API_TOKEN=" + tokenId) || rawQuery.contains("API_TOKEN=DEBUG"));
     }
 
     protected String readBody(HttpExchange h) throws IOException {
