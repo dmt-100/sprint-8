@@ -133,10 +133,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         epic = new Epic(id, taskType, name, description, status, startTime, endTime, duration, list);
                         epicList.add(epic);
                     }
-//                } else if (line.get(1).equals(TaskType.EPIC.toString())) {
-//                        epic = new Epic(id, taskType, name, description, status, startTime, endTime, duration, list);
-//                        epicList.add(epic);
-//                    }
 
                     if (line.get(1).equals(TaskType.SUBTASK.toString())) {
                         subtask = new Subtask(id, taskType, name, description, status, startTime, endTime, duration, epicId);
@@ -249,7 +245,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void removeTasksByTasktype(TaskType taskType) { // удаление всех задач
-//        if (this.historyManager.getUuidNodes().)
         super.removeTasksByTasktype(taskType);
         save();
     }
@@ -276,9 +271,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public List<Task> getAllTasks() {
-        List<Task> tasks = super.getAllTasks();
         save();
-        return tasks;
+        return super.getAllTasks();
+    }
+
+    @Override
+    public List<Task> prioritizeTasks() {
+        save();
+        return super.prioritizeTasks();
     }
 
 }

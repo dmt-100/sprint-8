@@ -24,6 +24,7 @@ public class Main {
 
 
 
+
     public static void main(String[] args) throws IOException, InterruptedException {
 
         new KVServer().start();
@@ -263,7 +264,7 @@ public class Main {
                     break;
 
                 case 11: // сортировка по стартовому времени
-                    httpTaskManager.getPrioritizedTasks();
+                    httpTaskManager.prioritizeTasks();
                     break;
 
                 case 12: // Тест ТЗ-8

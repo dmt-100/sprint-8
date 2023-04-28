@@ -18,8 +18,6 @@ import java.util.regex.Pattern;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class HttpTaskServer {
-//    private final HttpClient client = HttpClient.newHttpClient();
-
     public static final int PORT = 8080;
     private final TasksManager fileBackedTaskManager = Managers.getDefaultFileBacked();
     private Gson gson;

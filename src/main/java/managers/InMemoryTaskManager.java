@@ -274,30 +274,26 @@ public class InMemoryTaskManager implements TasksManager {
 
     // case 11: сортировка задач по стартовому времени
     @Override
-    public void prioritizeTasks() {
-
+    public List<Task> prioritizeTasks() {
+        List<Task> prioritizedTasks;
         if (tasks.size() > 1) {
-
-            prioritizedTasks = tasks.values().stream()
+            prioritizedTasks = new ArrayList<>(
+                    tasks.values().stream()
                     .filter(t -> (!t.getTaskType().equals(TaskType.EPIC)))
                     .sorted(Comparator.comparing(Task::getStartTime))
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toCollection(ArrayList::new)));
 
             for (Task prioritizedTask : prioritizedTasks) {
                 System.out.println(prioritizedTask);
             }
-
         } else {
-            System.out.println("Нужно ещё больше задач");
+            prioritizedTasks = null;
         }
+        return prioritizedTasks;
     }
 
     // ==========================   Getters       ==========================
-    @Override
-    public List<Task> getPrioritizedTasks() {
-        prioritizeTasks();
-        return prioritizedTasks;
-    }
+
 
     @Override
     public void test() throws IOException, InterruptedException {

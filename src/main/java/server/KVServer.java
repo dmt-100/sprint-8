@@ -6,11 +6,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import main.java.service.ManagerSaveException;
+import main.java.tasks.Epic;
+import main.java.tasks.Task;
 
 /**
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
@@ -19,12 +23,16 @@ import com.sun.net.httpserver.HttpServer;
 
 public class KVServer {
     public static final int PORT = 8078;
-    private final String apiToken;
+    private final String key;
     private final HttpServer httpServer;
     private final Map<String, String> data = new HashMap<>();
+    List<String> tasks;
+    List<String> epics;
+    List<String> subtasks;
+    List<String> history;
 
     public KVServer() throws IOException {
-        apiToken = generateApiToken();
+        key = generateApiToken();
         httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
         httpServer.createContext("/register", this::register);
         httpServer.createContext("/save", this::save);
@@ -40,22 +48,21 @@ public class KVServer {
                 return;
             }
 
-            if (exchange.getRequestMethod().equals("GET")) {
-                String api = String.valueOf(exchange.getRequestURI());
-                String apiKey = api.substring(api.indexOf("=") + 1);
+            if ("GET".equals(exchange.getRequestMethod())) {
+                String key = exchange.getRequestURI().getPath().substring("/load/".length());
 
-                if (data.containsKey(apiKey)) {
-                    String responseData = data.get(apiKey);
+                if (key.isEmpty()) {
+                    exchange.sendResponseHeaders(400, 0);
+                    String response = "400 Bad Request";
+                    OutputStream os = exchange.getResponseBody();
+                    os.write(response.getBytes());
+                    return;
+                }
 
-                    if (responseData != null) {
-                        sendText(exchange, responseData);
+                if (data.containsKey(key)) {
+                    String responseData = data.get(key);
+                    sendText(exchange, responseData); // *для себя: почему пропустил
 
-                    } else {
-                        exchange.sendResponseHeaders(400, 0);
-                        String response = "400 Bad Request";
-                        OutputStream os = exchange.getResponseBody();
-                        os.write(response.getBytes());
-                    }
                 } else {
                     exchange.sendResponseHeaders(404, 0);
                     String response = "404 Not Found";
@@ -69,22 +76,9 @@ public class KVServer {
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
             }
-
-            String path = exchange.getRequestURI().getPath();
-            String uri = String.valueOf(exchange.getRequestURI());
-            System.out.println("\n/load/getTasks");
-
-//            int lastIndex = uri.lastIndexOf('/');
-//            String type = uri.substring(lastIndex + 1).toUpperCase();
-
-            if ("DEBUG".equals(exchange.getRequestMethod())) {
-
-
-            }
         } finally {
             exchange.close();
         }
-
     }
 
 
@@ -125,24 +119,27 @@ public class KVServer {
         }
     }
 
-    private void register(HttpExchange h) throws IOException {
-        try {
+    private void register(HttpExchange h) {
+        try (h) {
             System.out.println("\n/register");
             if ("GET".equals(h.getRequestMethod())) {
-                sendText(h, apiToken);
+                sendText(h, key);
             } else {
                 System.out.println("/register ждёт GET-запрос, а получил " + h.getRequestMethod());
                 h.sendResponseHeaders(405, 0);
             }
+        } catch (IOException e) {
+            throw new ManagerSaveException(e);
         } finally {
             h.close();
+
         }
     }
 
     public void start() {
         System.out.println("Запускаем сервер на порту " + PORT);
         System.out.println("Открой в браузере http://localhost:" + PORT + "/");
-        System.out.println("API_TOKEN: " + apiToken);
+        System.out.println("API_TOKEN: " + key);
         httpServer.start();
     }
 
@@ -152,7 +149,7 @@ public class KVServer {
 
     protected boolean hasAuth(HttpExchange h) {
         String rawQuery = h.getRequestURI().getRawQuery();
-        return rawQuery != null && (rawQuery.contains("API_TOKEN=" + apiToken) || rawQuery.contains("API_TOKEN=DEBUG"));
+        return rawQuery != null && (rawQuery.contains("API_TOKEN=" + key) || rawQuery.contains("API_TOKEN=DEBUG"));
     }
 
     protected String readBody(HttpExchange h) throws IOException {

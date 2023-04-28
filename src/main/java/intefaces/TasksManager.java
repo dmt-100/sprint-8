@@ -35,9 +35,8 @@ public interface TasksManager {
     // case 10: получение всех задач
     List<Task> getAllTasks();
 
-    void prioritizeTasks();
+    List<Task> prioritizeTasks();
 
-    List<Task> getPrioritizedTasks();
 
 // -------------- HttpTaskManager --------------
     public void test() throws IOException, InterruptedException;

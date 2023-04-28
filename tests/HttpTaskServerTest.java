@@ -152,8 +152,8 @@ class HttpTaskServerTest {
         System.out.println("Output of response.body(): " + response.body());
         assertEquals(200, response.statusCode());
 
-        Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
-        List<Task> actual = gson.fromJson(response.body(), userType);
+        Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
+        List<Task> actual = gson.fromJson(response.body(), taskType);
         assertNotNull(actual, "Задачи не возвращаются");
 
         URI uriToRemove = URI.create("http://localhost:8080/tasks/task");
@@ -174,8 +174,8 @@ class HttpTaskServerTest {
         System.out.println("Output of response.body(): " + response.body());
         assertEquals(200, response.statusCode());
 
-        Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
-        List<Task> actual = gson.fromJson(response.body(), userType);
+        Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
+        List<Task> actual = gson.fromJson(response.body(), taskType);
         assertNotNull(actual, "Задачи не возвращаются");
 
         URI uriToRemove = URI.create("http://localhost:8080/tasks/epic");
@@ -195,8 +195,8 @@ class HttpTaskServerTest {
         System.out.println("Output of response.body(): " + response.body());
         assertEquals(200, response.statusCode());
 
-        Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
-        List<Task> actual = gson.fromJson(response.body(), userType);
+        Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
+        List<Task> actual = gson.fromJson(response.body(), taskType);
         assertNotNull(actual, "Задачи не возвращаются");
 
         URI uriToRemove = URI.create("http://localhost:8080/tasks/subtask");
@@ -218,8 +218,8 @@ class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, response.statusCode());
 
-        Type userType = new TypeToken<ArrayList<Task>>() {}.getType();
-        List<Task> actual = gson.fromJson(response.body(), userType);
+        Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
+        List<Task> actual = gson.fromJson(response.body(), taskType);
         assertNotNull(actual, "Задачи не возвращаются");
 
         URI uri2 = URI.create("http://localhost:8080/tasks/history");
