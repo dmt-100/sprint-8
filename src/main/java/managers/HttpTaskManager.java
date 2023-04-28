@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.java.intefaces.TasksManager;
 import main.java.server.KVTaskClient;
+import main.java.service.Status;
 import main.java.service.TaskType;
 import main.java.tasks.Task;
 
@@ -12,6 +13,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HttpTaskManager extends FileBackedTasksManager implements TasksManager {
@@ -61,8 +63,10 @@ public class HttpTaskManager extends FileBackedTasksManager implements TasksMana
     private void load() {
         Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
         List<Task> tasks;
-        tasks = gson.fromJson(client.load("tasks"), taskType);
-        this.tasks = tasks;
+        String response = client.load("tasks");
+        tasks = new ArrayList<>(gson.fromJson(response, taskType));
+        System.out.println(tasks);
+
 
         tasks = gson.fromJson(client.load("subtasks"), taskType);
         this.subtasks = tasks;
@@ -75,12 +79,98 @@ public class HttpTaskManager extends FileBackedTasksManager implements TasksMana
     }
 
     @Override
-    public List<Task> getAllTasksByTaskType(TaskType taskType) {
-        load();
-        return (List<Task>) tasks.stream().filter(t -> t.getTaskType().equals(taskType));
+    public void addTask(Task task) {
+        super.addTask(task);
+        save();
     }
 
+    @Override
+    public Task getTask(UUID idInput) {
+        Task task = super.getTask(idInput);
+        load();
+        return task;
+    }
 
+    @Override
+    public void updateTask(Task task) {
+        super.updateTask(task);
+        save();
+    }
+
+    @Override
+    public void removeTaskById(UUID id) {
+        super.removeTaskById(id);
+        save();
+    }
+
+    @Override
+    public List<Task> getAllTasksByTaskType(TaskType taskType) {
+        List<Task> tasks = null;
+        load();
+        switch (taskType) {
+            case TASK: {
+                tasks = this.tasks;
+                break;
+            }
+            case SUBTASK: {
+                tasks = subtasks;
+                break;
+            }
+            case EPIC: {
+                tasks = epics;
+            }
+            default:
+                break;
+        }
+        return tasks;
+    }
+
+    @Override
+    public void removeTasksByTasktype(TaskType taskType) { // удаление всех задач
+        super.removeTasksByTasktype(taskType);
+        save();
+    }
+
+    @Override
+    public void changeStatusTask(UUID id, Status status) { // изменение статуса
+        super.changeStatusTask(id, status);
+        save();
+    }
+
+    @Override
+    public List<Task> getSubtasksFromEpic(UUID epicId) { // Получение списка всех подзадач определённого эпика
+        load();
+        List<Task> subtasks = super.getSubtasksFromEpic(epicId);
+        return subtasks;
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        load();
+        List<Task> history = super.getHistory();
+        return this.history;
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        load();
+        List<Task> allTasks = new ArrayList<>();
+        allTasks.addAll(tasks);
+        allTasks.addAll(subtasks);
+        allTasks.addAll(epics);
+        return allTasks;
+    }
+
+    @Override
+    public List<Task> prioritizeTasks() {
+        load();
+        List<Task> allTasks = new ArrayList<>();
+        allTasks.addAll(tasks);
+        allTasks.addAll(subtasks);
+        allTasks.addAll(epics);
+        allTasks = super.prioritizeTasks();
+        return allTasks;
+    }
 }
 
 
