@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -21,15 +20,15 @@ import main.java.service.ManagerSaveException;
 public class KVServer {
     public static final int PORT = 8078;
     private final String tokenId;
-    private final HttpServer httpServer;
+    private final HttpServer kvServer;
     private final Map<String, String> data = new HashMap<>();
 
     public KVServer() throws IOException {
         tokenId = generateApiToken();
-        httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
-        httpServer.createContext("/register", this::register);
-        httpServer.createContext("/save", this::save);
-        httpServer.createContext("/load", this::load);
+        kvServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
+        kvServer.createContext("/register", this::register);
+        kvServer.createContext("/save", this::save);
+        kvServer.createContext("/load", this::load);
     }
 
     private void load(HttpExchange exchange) throws IOException { //это метод, который отвечает за получение данных.
@@ -137,7 +136,12 @@ public class KVServer {
         System.out.println("Запускаем сервер на порту " + PORT);
         System.out.println("Открой в браузере http://localhost:" + PORT + "/");
         System.out.println("API_TOKEN: " + tokenId);
-        httpServer.start();
+        kvServer.start();
+    }
+
+    public void stop() {
+        kvServer.stop(0);
+        System.out.println("Сервер закрыт");
     }
 
     private String generateApiToken() {

@@ -63,7 +63,6 @@ public class HttpTaskManager extends FileBackedTasksManager {
             getTasks().put(task.getId(), task);
         }
 
-
         ArrayList<Epic> epics = gson.fromJson(removeQuotesAndUnescape(client.load("epics")),
                 new TypeToken<ArrayList<Epic>>() {
                 }.getType());

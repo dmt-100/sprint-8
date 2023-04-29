@@ -147,10 +147,10 @@ abstract class TaskManagerTest<T extends TasksManager> {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        task2.setStartTime(testDateTimeTask); // начальное время попадает в отрезок времени task
+        task2.setStartTime(testDateTimeTask); // начальное время попадает в отрезок времени task1
         fileBackedTasksManager.addTask(task2);
 
-        String expectedOutput = "Для задачи: " + task2.getName() + ", нужно  другое стартовое время.";
+        String expectedOutput = "Для задачи: " + task2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);
@@ -162,7 +162,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         task2.setDuration(50);
         fileBackedTasksManager.addTask(task2);
 
-        String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно  другое конечное время.";
+        String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
 
         assertEquals(expectedOutput2, actualOutput2);
@@ -176,7 +176,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         task2.setStartTime(testDateTimeTask.minusMinutes(1));
         fileBackedTasksManager.addTask(task2);
 
-        String expectedOutput = "Для задачи: " + task2.getName() + ", нужно  другое стартовое время.";
+        String expectedOutput = "Для задачи: " + task2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);
@@ -185,10 +185,11 @@ abstract class TaskManagerTest<T extends TasksManager> {
         System.setOut(new PrintStream(outContent2));
 
         task2.setStartTime(testDateTimeTask.minusMinutes(10));
-        task2.setDuration(49); // совпадает с конечным временем на .equals
+        task2.setEndTime(task2.getStartTime().plusMinutes(50)); // совпадает с конечным временем на .equals
+        task2.setDuration(50);
         fileBackedTasksManager.addTask(task2);
 
-        String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно  другое конечное время.";
+        String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
 
         assertEquals(expectedOutput2, actualOutput2);
@@ -199,11 +200,11 @@ abstract class TaskManagerTest<T extends TasksManager> {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        task2.setStartTime(testDateTimeTask);
+        task2.setStartTime(testDateTimeTask); //"2000-01-01T00:01:00"
         task2.setDuration(48);
         fileBackedTasksManager.addTask(task2);
 
-        String expectedOutput = "Для задачи: " + task2.getName() + ", нужно  другое стартовое время.";
+        String expectedOutput = "Для задачи: " + task2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
         assertEquals(expectedOutput, actualOutput);
     }
@@ -217,7 +218,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         subtask2.setStartTime(testDateTimeTask); // начальное время попадает в отрезок времени task
         fileBackedTasksManager.addTask(subtask2);
 
-        String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно  другое стартовое время.";
+        String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);
@@ -229,7 +230,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         subtask2.setDuration(50);
         fileBackedTasksManager.addTask(subtask2);
 
-        String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно  другое конечное время.";
+        String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
 
         assertEquals(expectedOutput2, actualOutput2);
@@ -243,7 +244,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         subtask2.setStartTime(testDateTimeTask.minusMinutes(1));
         fileBackedTasksManager.addTask(subtask2);
 
-        String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно  другое стартовое время.";
+        String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);
@@ -255,7 +256,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         subtask2.setDuration(49); // совпадает с конечным временем на .equals
         fileBackedTasksManager.addTask(subtask2);
 
-        String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно  другое конечное время.";
+        String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
 
         assertEquals(expectedOutput2, actualOutput2);
@@ -270,7 +271,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         subtask2.setDuration(48);
         fileBackedTasksManager.addTask(subtask2);
 
-        String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно  другое стартовое время.";
+        String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
         assertEquals(expectedOutput, actualOutput);
     }
@@ -558,7 +559,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
 
         fileBackedTasksManager.prioritizeTasks();
 
-        String expectedOutput = "Нужно ещё больше задач";
+        String expectedOutput = "Нужно больше задач";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);

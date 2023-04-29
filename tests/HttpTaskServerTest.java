@@ -26,7 +26,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class HttpTaskServerTest {
+class HttpTaskServerTest  {
 
     private final Gson gson = Managers.getGson();
     HttpTaskServer taskServer = new HttpTaskServer();
@@ -99,6 +99,8 @@ class HttpTaskServerTest {
         taskServer.stop();
     }
 
+
+
     @Test
     void getTasks() throws IOException, InterruptedException {
 
@@ -146,22 +148,18 @@ class HttpTaskServerTest {
         Type userType = new TypeToken<Task>() {}.getType();
         Task actual = gson.fromJson(response.body(), userType);
 
-        assertNotNull(actual, "Задача не возвращаются");
+        assertNotNull(actual, "Задача не возвращается");
         assertEquals(task1.toString(), actual.toString());
     }
 //==================================== POST ====================================
-// не совсем понимаю как запостить задачу https://i.ibb.co/fqX6RMW/image.png
-// ошибка пришлась на фигурные скобки https://i.ibb.co/L04TJvq/image.png
+
     @Test
     void postTask() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
-        String bodyOfTask = gson.toJson(task1);
-
-        URI uri = URI.create("http://localhost:8080/tasks/task/" + bodyOfTask);
-        HttpRequest request = HttpRequest
-                .newBuilder()
-                .uri(uri)
-                .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(task1)))
+        String json = gson.toJson(task1);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/tasks/task/"))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -171,7 +169,7 @@ class HttpTaskServerTest {
         Type userType = new TypeToken<Task>() {}.getType();
         Task actual = gson.fromJson(response.body(), userType);
 
-        assertNotNull(actual, "Задача не возвращаются");
+        assertNotNull(actual, "Задача не возвращается");
         assertEquals(task1.toString(), actual.toString());
     }
 
@@ -251,8 +249,6 @@ class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         ArrayList<Task> actual;
 
-//        Type userType = new TypeToken<Task>() {}.getType();
-//        actual = gson.fromJson(response.body(), userType);
         Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
         actual = gson.fromJson(response.body(), taskType);
 

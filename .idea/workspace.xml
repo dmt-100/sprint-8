@@ -5,18 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db70d58e-657e-4b76-bf39-64aa292f9562" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_lang3_3_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/jackson_core_2_15_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/object_mapper_1_1_68.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sprint 8.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Sprint 8.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/managers/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/Managers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/GsonManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/GsonManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/KVServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/KVServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Subtask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Subtask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/TaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/TaskManagerTest.java" afterDir="false" />
     </list>
@@ -29,8 +31,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -65,7 +67,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "jdk.selected.JAVA_MODULE": "corretto-17",
     "last_directory_selection": "C:/IdeaProjects/YandexPraktikum/Sprint 8/tests/main/java",
-    "last_opened_file_path": "C:/IdeaProjects/libs/commons-lang3-3.12.0",
+    "last_opened_file_path": "C:/IdeaProjects/libs/object-mapper-1.1.68.jar",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -90,6 +92,7 @@
       <recent name="main.java.server" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="main.java.managers" />
       <recent name="main.java.server" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -97,13 +100,22 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.HttpTaskServerTest.getSubtasksUuudsByEpic">
-    <configuration name="HttpTaskManagerTest.checkTasks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.HttpTaskServerTest">
+    <configuration name="FileBackedTasksManagerTest.testCase11GetPrioritizedTasksWhenEmptyMap" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="FileBackedTasksManagerTest" />
+      <option name="METHOD_NAME" value="testCase11GetPrioritizedTasksWhenEmptyMap" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpTaskManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="HttpTaskManagerTest" />
-      <option name="METHOD_NAME" value="checkTasks" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -113,16 +125,6 @@
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HttpTaskServerTest.getSubtasksUuudsByEpic" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Sprint 8" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
-      <option name="METHOD_NAME" value="getSubtasksUuudsByEpic" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -149,11 +151,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.HttpTaskServerTest.getSubtasksUuudsByEpic" />
-        <item itemvalue="JUnit.HttpTaskServerTest.getTaskById" />
-        <item itemvalue="JUnit.HttpTaskServerTest.postTask" />
         <item itemvalue="JUnit.HttpTaskServerTest" />
-        <item itemvalue="JUnit.HttpTaskManagerTest.checkTasks" />
+        <item itemvalue="JUnit.HttpTaskServerTest.postTask" />
+        <item itemvalue="JUnit.HttpTaskManagerTest" />
+        <item itemvalue="JUnit.FileBackedTasksManagerTest.testCase11GetPrioritizedTasksWhenEmptyMap" />
+        <item itemvalue="JUnit.FileBackedTasksManagerTest.testCase11GetPrioritizedTasksWhenEmptyMap" />
       </list>
     </recent_temporary>
   </component>
@@ -188,9 +190,34 @@
           <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java</url>
-          <line>138</line>
-          <option name="timeStamp" value="191" />
+          <url>file://$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java</url>
+          <line>144</line>
+          <option name="timeStamp" value="211" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/TaskManagerTest.java</url>
+          <line>194</line>
+          <option name="timeStamp" value="237" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/TaskManagerTest.java</url>
+          <line>189</line>
+          <option name="timeStamp" value="239" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java</url>
+          <line>119</line>
+          <option name="timeStamp" value="248" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/TaskManagerTest.java</url>
+          <line>192</line>
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/TaskManagerTest.java</url>
+          <line>559</line>
+          <option name="timeStamp" value="251" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -201,6 +228,7 @@
         <PinnedItemInfo parentTag="jdk.internal.net.http.HttpResponseImpl" memberName="version" />
         <PinnedItemInfo parentTag="java.lang.Module" memberName="loader" />
         <PinnedItemInfo parentTag="main.java.managers.HttpTaskManager" memberName="client" />
+        <PinnedItemInfo parentTag="jdk.internal.net.http.ImmutableHttpRequest" memberName="method" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>
@@ -212,6 +240,7 @@
         <watch expression="((HashMap)tasks).entrySet().toArray()[2]" custom="java.util.HashMap" />
         <watch expression="((HashMap.Node)((HashMap)((FileBackedTasksManager)taskServer.fileBackedTaskManager).tasks).entrySet().toArray()[2]).getValue()" custom="main.java.managers.FileBackedTasksManager,java.util.HashMap.Node,java.util.HashMap" />
         <watch expression="taskServer.fileBackedTaskManager" />
+        <watch expression="((HashMap)((FileBackedTasksManager)fileBackedTaskManager).tasks).entrySet().toArray()[1]" custom="main.java.managers.FileBackedTasksManager,java.util.HashMap" />
       </configuration>
       <configuration name="Application">
         <watch expression="((HttpServerImpl)((KVServer)this).httpServer).server" custom="main.java.server.KVServer,sun.net.httpserver.HttpServerImpl" />
@@ -223,5 +252,6 @@
     <SUITE FILE_PATH="coverage/Sprint_8$Main.ic" NAME="Main Coverage Results" MODIFIED="1682381609390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>main.java.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/Sprint_8$HttpTaskServerTest_postTask.ic" NAME="HttpTaskServerTest.postTask Coverage Results" MODIFIED="1682805455929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

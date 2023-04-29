@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="object-mapper-1.1.68">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../libs/object-mapper-1.1.68.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

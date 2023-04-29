@@ -1,15 +1,18 @@
 import main.java.managers.FileBackedTasksManager;
 import main.java.managers.HttpTaskManager;
 import main.java.managers.Managers;
+import main.java.server.KVServer;
 import main.java.service.Status;
 import main.java.service.TaskType;
 import main.java.tasks.Epic;
 import main.java.tasks.Subtask;
 import main.java.tasks.Task;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +21,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HttpTaskManagerTest {
+public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
+
+    private KVServer kvServer;
 
     private static final String sep = File.separator;
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
@@ -40,9 +45,15 @@ public class HttpTaskManagerTest {
 
     HttpTaskManager httpTaskManager1;
     HttpTaskManager httpTaskManager2;
+    HttpTaskManagerTest httpTaskManagerTest;
 
     @BeforeEach
-    void init() {
+    void init()  throws IOException {
+
+        kvServer = new KVServer();
+        kvServer.start();
+        setTaskManager();
+// ----------------------------------------
         fileBackedTasksManager = new FileBackedTasksManager(file);
 
         Task task1 = new Task(
@@ -108,12 +119,23 @@ public class HttpTaskManagerTest {
 
     }
 
-
+    @AfterEach
+    void after() {
+        kvServer.stop();
+    }
     @Test
     void checkTasks() {
-        fileBackedTasksManager = new FileBackedTasksManager(file);
-        HttpTaskManager httpTaskManagerTest = new HttpTaskManager(uri, true);
-        assertEquals(fileBackedTasksManager.getAllTasks(), httpTaskManagerTest.getAllTasks(),
-                "Список задач после выгрузки не совпададает");
+        HttpTaskManager load = new HttpTaskManager(URI.create("http://localhost:8078/"), true);
+        assertEquals(taskManager.getAllTasks(), load.getAllTasks(),
+                "Задачи после выгрузки не совпадают");
+        assertEquals(taskManager.prioritizeTasks(), load.prioritizeTasks(),
+                "Отсортированный список не совпадает");
+        assertEquals(taskManager.getHistory(), load.getHistory(),
+                "Список задач в истории не совпадает");
+    }
+
+    @Override
+    void setTaskManager() {
+        taskManager = new HttpTaskManager(URI.create("http://localhost:8078/"), false);
     }
 }

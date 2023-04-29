@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class InMemoryTaskManager implements TasksManager {
     private final Map<UUID, Task> tasks = new HashMap<>();
     private List<Task> prioritizedTasks = new ArrayList<>();
-//    private List<Task> prioritizedTasks2 = new ArrayList<>();
+    //    private List<Task> prioritizedTasks2 = new ArrayList<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -24,8 +24,9 @@ public class InMemoryTaskManager implements TasksManager {
         if (task.getId() == null) {
             task.setId(java.util.UUID.randomUUID());
         }
+
         LocalDateTime startTime = task.getStartTime();
-        LocalDateTime endTime = task.getStartTime();
+        LocalDateTime endTime = task.getEndTime();
         LocalDateTime dateTimeTestEpic1 = LocalDateTime.parse("2000-01-01T05:00:00"); // для тестов
         if (TaskType.EPIC.equals(task.getTaskType()) && task.getStartTime() == null) {
             task.setStartTime(dateTimeTestEpic1);
@@ -46,8 +47,9 @@ public class InMemoryTaskManager implements TasksManager {
                         System.out.println("Задача: " + task.getName() + ", успешно добавлена");
                         return;
                     }
+                    return;
                 }
-                if (!taskType.equals(TaskType.EPIC)) {
+                if (taskType.equals(TaskType.SUBTASK)) { // для сабтасков
 
                     if (checkTimeCrossing(startTime, endTime, task.getName())) {
                         tasks.put(task.getId(), task);
@@ -83,6 +85,7 @@ public class InMemoryTaskManager implements TasksManager {
 
                         updateTask(newEpic);
                     }
+                    return;
                 }
                 tasks.put(task.getId(), task); // для эпика
             } else {
@@ -101,20 +104,20 @@ public class InMemoryTaskManager implements TasksManager {
             LocalDateTime taskEndTime = taskInMap.getEndTime();
 
             if (taskStartTime.isEqual(startTime)) {
-                System.out.println("Для задачи: " + name + ", нужно  другое стартовое время.");
+                System.out.println("Для задачи: " + name + ", нужно другое стартовое время.");
                 return false;
             }
             if (taskEndTime.isEqual(endTime)) {
-                System.out.println("Для задачи: " + name + ", нужно  другое конечное время.");
+                System.out.println("Для задачи: " + name + ", нужно другое конечное время.");
                 return false;
             }
 
             if ((taskStartTime.isBefore(startTime) && taskEndTime.isAfter(startTime))) {
-                System.out.println("Для задачи: " + name + ", нужно  другое стартовое время.");
+                System.out.println("Для задачи: " + name + ", нужно другое стартовое время.");
                 return false;
             }
             if (taskStartTime.isBefore(endTime) && taskEndTime.isAfter(endTime)) {
-                System.out.println("Для задачи: " + name + ", нужно  другое конечное время.");
+                System.out.println("Для задачи: " + name + ", нужно другое конечное время.");
                 return false;
             }
         }
@@ -279,15 +282,16 @@ public class InMemoryTaskManager implements TasksManager {
         if (tasks.size() > 1) {
             prioritizedTasks = new ArrayList<>(
                     tasks.values().stream()
-                    .filter(t -> (!t.getTaskType().equals(TaskType.EPIC)))
-                    .sorted(Comparator.comparing(Task::getStartTime))
-                    .collect(Collectors.toCollection(ArrayList::new)));
+                            .filter(t -> (!t.getTaskType().equals(TaskType.EPIC)))
+                            .sorted(Comparator.comparing(Task::getStartTime))
+                            .collect(Collectors.toCollection(ArrayList::new)));
 
             for (Task prioritizedTask : prioritizedTasks) {
                 System.out.println(prioritizedTask);
             }
         } else {
             prioritizedTasks = null;
+            System.out.println("Нужно больше задач");
         }
         return prioritizedTasks;
     }

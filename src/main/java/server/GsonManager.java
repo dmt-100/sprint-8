@@ -15,4 +15,6 @@ public class GsonManager {
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
         return gsonBuilder.create();
     }
+
+
 }

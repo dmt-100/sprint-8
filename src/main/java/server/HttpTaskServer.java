@@ -1,17 +1,20 @@
 package main.java.server;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import main.java.intefaces.TasksManager;
 import main.java.managers.Managers;
 import main.java.service.TaskType;
+import main.java.tasks.Task;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -22,10 +25,11 @@ public class HttpTaskServer {
     private final TasksManager fileBackedTaskManager = Managers.getDefaultFileBacked();
     private Gson gson;
     private HttpServer httpServer;
+    private List<String> post;
 
     public HttpTaskServer() throws IOException {
         gson = Managers.getGson();
-        InetSocketAddress socket = new InetSocketAddress(8078);
+        InetSocketAddress socket = new InetSocketAddress(8080);
         httpServer = HttpServer.create(new InetSocketAddress(socket.getAddress(), PORT), 0);
         httpServer.createContext("/tasks", this::handleTasks);
     }
@@ -36,10 +40,12 @@ public class HttpTaskServer {
 
     private void handleTasks(HttpExchange httpExchange) {
         try {
-            String path = httpExchange.getRequestURI().getPath();
-            String uri = String.valueOf(httpExchange.getRequestURI());
 
+            String uri = String.valueOf(httpExchange.getRequestURI());
             String[] splitUries = uri.split("/");
+            String path = httpExchange.getRequestURI().getPath();
+
+
 
             UUID uuid = null;
             String type = splitUries[2].toUpperCase();
@@ -78,9 +84,18 @@ public class HttpTaskServer {
                     break;
                 }
                 case "POST_TASK": {
-                    if (Pattern.matches("^/tasks/task$", path)) {
+                    String body = new String(httpExchange.getRequestBody().readAllBytes(), UTF_8);
+                    Type typePost = new TypeToken<Task>() {}.getType();
+                    Task task = gson.fromJson(body, typePost);
+                    fileBackedTaskManager.addTask(task);
 
-                    }
+                    Task taskPost = fileBackedTaskManager.getTask(task.getId());
+                    String json = gson.toJson(taskPost);
+                    httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+                    httpExchange.sendResponseHeaders(200, 0);
+                    httpExchange.getResponseBody().write(json
+                            .getBytes(UTF_8));
+                    System.out.println("Задача отправлена обратно");
 
                     break;
                 }

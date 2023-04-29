@@ -90,35 +90,6 @@ public class Epic extends Task {
         subtasks.remove(id);
     }
 
-//    @Override
-//    public LocalDateTime getStartTime() {
-//        return startTime;
-//    }
-//
-//    @Override
-//    public void setStartTime(LocalDateTime startTime) {
-//        this.startTime = startTime;
-//    }
-//
-//    public LocalDateTime getEndTime() {
-//        return endTime;
-//    }
-//
-//    @Override
-//    public void setEndTime(LocalDateTime endTime) {
-//        this.endTime = endTime;
-//    }
-
-//    @Override
-//    public int getDuration() {
-//        return super.getDuration();
-//    }
-//
-//    @Override
-//    public void setDuration(int duration) {
-//        super.setDuration(duration);
-//    }
-
     @Override
     public List<UUID> getSubtasks() {
         return subtasks;
@@ -133,7 +104,7 @@ public class Epic extends Task {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Subtask)) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
         return Objects.equals(subtasks, epic.subtasks);

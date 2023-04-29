@@ -8,13 +8,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-
-// ТЗ-8: напишите HTTP-клиент. С его помощью мы переместим хранение состояния менеджера из файлов на отдельный сервер.
-
 public class KVTaskClient {
     private final String tokenId;
     private final String uri;
-
 
     public KVTaskClient(URI uri){
         this.uri = String.valueOf(uri);
@@ -83,6 +79,5 @@ public class KVTaskClient {
             throw new ManagerSaveException("Что-то не так в методе load");
         }
     }
-
 
 }

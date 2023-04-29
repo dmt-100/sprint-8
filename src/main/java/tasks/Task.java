@@ -206,13 +206,16 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return id == task.id;
-//                && Objects.equals(name, task.name) &&
-//                Objects.equals(description, task.description) &&
-//                Objects.equals(status, task.status) &&
-//                Objects.equals(startTime, task.startTime);
+        return duration == task.duration &&
+                Objects.equals(id, task.id) &&
+                taskType == task.taskType &&
+                Objects.equals(name, task.name) &&
+                Objects.equals(description, task.description) &&
+                status == task.status &&
+                Objects.equals(startTime, task.startTime) &&
+                Objects.equals(endTime, task.endTime);
     }
 
     @Override
