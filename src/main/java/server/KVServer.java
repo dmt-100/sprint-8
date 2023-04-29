@@ -23,10 +23,6 @@ public class KVServer {
     private final String tokenId;
     private final HttpServer httpServer;
     private final Map<String, String> data = new HashMap<>();
-    List<String> tasks;
-    List<String> epics;
-    List<String> subtasks;
-    List<String> history;
 
     public KVServer() throws IOException {
         tokenId = generateApiToken();

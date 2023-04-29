@@ -5,8 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db70d58e-657e-4b76-bf39-64aa292f9562" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_lang3_3_12.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sprint 8.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Sprint 8.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/managers/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/Managers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/taskSaves.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/KVServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/KVServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/KVTaskClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/TaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/TaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,27 +51,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path&quot;: &quot;C:\\IdeaProjects\\libs&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-17&quot;,
-    &quot;last_directory_selection&quot;: &quot;C:/IdeaProjects/YandexPraktikum/Sprint 8/tests/main/java&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2022.2.3/lib/junit4.jar&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path": "C:\\IdeaProjects\\libs",
+    "Downloaded.Files.Path.Enabled": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "jdk.selected.JAVA_MODULE": "corretto-17",
+    "last_directory_selection": "C:/IdeaProjects/YandexPraktikum/Sprint 8/tests/main/java",
+    "last_opened_file_path": "C:/IdeaProjects/libs/commons-lang3-3.12.0",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="main.java.managers" />
@@ -85,16 +97,13 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="main.java.Main" />
+  <component name="RunManager" selected="JUnit.HttpTaskServerTest.getSubtasksUuudsByEpic">
+    <configuration name="HttpTaskManagerTest.checkTasks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="main.java.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="HttpTaskManagerTest" />
+      <option name="METHOD_NAME" value="checkTasks" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -108,31 +117,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HttpTaskServerTest.getHistory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HttpTaskServerTest.getSubtasksUuudsByEpic" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
-      <option name="METHOD_NAME" value="getHistory" />
+      <option name="METHOD_NAME" value="getSubtasksUuudsByEpic" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HttpTaskServerTest.removeAllTasksByTaskType_EPIC" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HttpTaskServerTest.getTaskById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
-      <option name="METHOD_NAME" value="removeAllTasksByTaskType_EPIC" />
+      <option name="METHOD_NAME" value="getTaskById" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HttpTaskServerTest.removeAllTasksByTaskType_TASK" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HttpTaskServerTest.postTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="HttpTaskServerTest" />
-      <option name="METHOD_NAME" value="removeAllTasksByTaskType_TASK" />
+      <option name="METHOD_NAME" value="postTask" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -140,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.HttpTaskServerTest.getHistory" />
+        <item itemvalue="JUnit.HttpTaskServerTest.getSubtasksUuudsByEpic" />
+        <item itemvalue="JUnit.HttpTaskServerTest.getTaskById" />
+        <item itemvalue="JUnit.HttpTaskServerTest.postTask" />
         <item itemvalue="JUnit.HttpTaskServerTest" />
-        <item itemvalue="JUnit.HttpTaskServerTest.removeAllTasksByTaskType_TASK" />
-        <item itemvalue="JUnit.HttpTaskServerTest.removeAllTasksByTaskType_EPIC" />
+        <item itemvalue="JUnit.HttpTaskManagerTest.checkTasks" />
       </list>
     </recent_temporary>
   </component>
@@ -177,6 +186,11 @@
           <url>file://$PROJECT_DIR$/tests/InMemoryHistoryManagerTest.java</url>
           <line>275</line>
           <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java</url>
+          <line>138</line>
+          <option name="timeStamp" value="191" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

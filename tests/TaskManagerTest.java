@@ -542,7 +542,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
         fileBackedTasksManager.addTask(subtask);
 
         boolean flag = false;
-        List<Task> tasks = new ArrayList<>(fileBackedTasksManager.getPrioritizedTasks());
+        List<Task> tasks = new ArrayList<>(fileBackedTasksManager.prioritizeTasks());
         for (Task task1 : tasks) {
             if (task1.getTaskType().equals(TaskType.TASK) || task1.getTaskType().equals(TaskType.SUBTASK)) { // Эпики в prioritizedTasks не нужны
                 flag = true;

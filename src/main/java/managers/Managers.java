@@ -27,6 +27,6 @@ public abstract class Managers {
     }
 
     public static HttpTaskManager getDefault()  {
-        return new HttpTaskManager(BASE_URL);
+        return new HttpTaskManager(BASE_URL, false);
     }
 }

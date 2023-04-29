@@ -33,9 +33,18 @@ class HttpTaskServerTest {
     TasksManager fileBackedTasksManager =  taskServer.getFileBackedTaskManager();
     LocalDateTime dateTimeTestTask1 = LocalDateTime.parse("2000-01-01T01:00:00");
     LocalDateTime dateTimeTestSubtask1 = LocalDateTime.parse("2000-01-01T06:00:00");
-    private Task task1 = new Task(
+    Task task1 = new Task(
             TaskType.TASK,
             "Переезд1",
+            "Собрать коробки",
+            Status.NEW,
+            dateTimeTestTask1,
+            50
+    );
+
+    Task taskToPost = new Task(
+            TaskType.TASK,
+            "Переезд2",
             "Собрать коробки",
             Status.NEW,
             dateTimeTestTask1,
@@ -137,7 +146,32 @@ class HttpTaskServerTest {
         Type userType = new TypeToken<Task>() {}.getType();
         Task actual = gson.fromJson(response.body(), userType);
 
-        assertNotNull(actual, "Задачи не возвращаются");
+        assertNotNull(actual, "Задача не возвращаются");
+        assertEquals(task1.toString(), actual.toString());
+    }
+//==================================== POST ====================================
+// не совсем понимаю как запостить задачу https://i.ibb.co/fqX6RMW/image.png
+// ошибка пришлась на фигурные скобки https://i.ibb.co/L04TJvq/image.png
+    @Test
+    void postTask() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        String bodyOfTask = gson.toJson(task1);
+
+        URI uri = URI.create("http://localhost:8080/tasks/task/" + bodyOfTask);
+        HttpRequest request = HttpRequest
+                .newBuilder()
+                .uri(uri)
+                .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(task1)))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Output of response.body(): " + response.body());
+        assertEquals(200, response.statusCode());
+
+        Type userType = new TypeToken<Task>() {}.getType();
+        Task actual = gson.fromJson(response.body(), userType);
+
+        assertNotNull(actual, "Задача не возвращаются");
         assertEquals(task1.toString(), actual.toString());
     }
 
@@ -203,7 +237,26 @@ class HttpTaskServerTest {
         HttpRequest requestToRemove = HttpRequest.newBuilder().uri(uriToRemove).DELETE().build();
         client.send(requestToRemove, HttpResponse.BodyHandlers.discarding());
 
+
         assertEquals(new ArrayList<>(), fileBackedTasksManager.getAllTasksByTaskType(TaskType.SUBTASK));
+    }
+
+    @Test
+    void getSubtasksUuudsByEpic() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        String uuid = String.valueOf(fileBackedTasksManager.getTasks().get(epic1.getId()).getId());
+        URI uri = URI.create("http://localhost:8080/tasks/subtask/epic/?id=" + uuid);
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        ArrayList<Task> actual;
+
+//        Type userType = new TypeToken<Task>() {}.getType();
+//        actual = gson.fromJson(response.body(), userType);
+        Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
+        actual = gson.fromJson(response.body(), taskType);
+
+        assertEquals(subtask1.getId(), actual.get(0).getId());
     }
 
 //==================================== History ====================================

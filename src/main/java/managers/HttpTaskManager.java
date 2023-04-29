@@ -1,34 +1,29 @@
 package main.java.managers;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import main.java.intefaces.TasksManager;
 import main.java.server.KVTaskClient;
-import main.java.service.Status;
 import main.java.service.TaskType;
+import main.java.tasks.Epic;
+import main.java.tasks.Subtask;
 import main.java.tasks.Task;
+import org.apache.commons.lang3.StringEscapeUtils;
 
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class HttpTaskManager extends FileBackedTasksManager implements TasksManager {
-    private final Gson gson;
+public class HttpTaskManager extends FileBackedTasksManager {
+    private final Gson gson = Managers.getGson();
     private final KVTaskClient client;
+    URI uri;
 
-    private  List<Task> tasks;
-    private  List<Task> epics;
-    private  List<Task> subtasks;
-    private  List<Task> history;
-
-    public HttpTaskManager(URI url) {
-        super();
-        gson = Managers.getGson();
-        this.client = new KVTaskClient(url);
+    public HttpTaskManager(URI uri, boolean load) {
+        this.client = new KVTaskClient(uri);
+        if (load) {
+            load();
+        }
     }
 
     @Override
@@ -61,117 +56,54 @@ public class HttpTaskManager extends FileBackedTasksManager implements TasksMana
     }
 
     private void load() {
-        Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
-        List<Task> tasks;
-        String response = client.load("tasks");
-        tasks = new ArrayList<>(gson.fromJson(response, taskType));
-        System.out.println(tasks);
-
-
-        tasks = gson.fromJson(client.load("subtasks"), taskType);
-        this.subtasks = tasks;
-
-        tasks = gson.fromJson(client.load("epics"), taskType);
-        this.epics = tasks;
-
-        tasks = gson.fromJson(client.load("history"), taskType);
-        this.history = tasks;
-    }
-
-    @Override
-    public void addTask(Task task) {
-        super.addTask(task);
-        save();
-    }
-
-    @Override
-    public Task getTask(UUID idInput) {
-        Task task = super.getTask(idInput);
-        load();
-        return task;
-    }
-
-    @Override
-    public void updateTask(Task task) {
-        super.updateTask(task);
-        save();
-    }
-
-    @Override
-    public void removeTaskById(UUID id) {
-        super.removeTaskById(id);
-        save();
-    }
-
-    @Override
-    public List<Task> getAllTasksByTaskType(TaskType taskType) {
-        List<Task> tasks = null;
-        load();
-        switch (taskType) {
-            case TASK: {
-                tasks = this.tasks;
-                break;
-            }
-            case SUBTASK: {
-                tasks = subtasks;
-                break;
-            }
-            case EPIC: {
-                tasks = epics;
-            }
-            default:
-                break;
+        ArrayList<Task> tasks = gson.fromJson(removeQuotesAndUnescape(client.load("tasks")),
+                new TypeToken<ArrayList<Task>>() {
+                }.getType());
+        for (Task task : tasks) {
+            getTasks().put(task.getId(), task);
         }
-        return tasks;
+
+
+        ArrayList<Epic> epics = gson.fromJson(removeQuotesAndUnescape(client.load("epics")),
+                new TypeToken<ArrayList<Epic>>() {
+                }.getType());
+        for (Epic epic : epics) {
+            getTasks().put(epic.getId(), epic);
+        }
+
+        ArrayList<Subtask> subtasks = gson.fromJson(removeQuotesAndUnescape(client.load("subtasks")),
+                new TypeToken<ArrayList<Subtask>>() {
+                }.getType());
+        for (Subtask subtask : subtasks) {
+            getTasks().put(subtask.getId(), subtask);
+        }
+
+        ArrayList<UUID> history = gson.fromJson(removeQuotesAndUnescape(client.load("history")),
+                new TypeToken<ArrayList<UUID>>() {
+                }.getType());
+        for (UUID uuid : history) {
+            Task task = getTasks().get(uuid);
+            getHistoryManager().add(task);
+        }
     }
 
-    @Override
-    public void removeTasksByTasktype(TaskType taskType) { // удаление всех задач
-        super.removeTasksByTasktype(taskType);
-        save();
-    }
-
-    @Override
-    public void changeStatusTask(UUID id, Status status) { // изменение статуса
-        super.changeStatusTask(id, status);
-        save();
-    }
-
-    @Override
-    public List<Task> getSubtasksFromEpic(UUID epicId) { // Получение списка всех подзадач определённого эпика
-        load();
-        List<Task> subtasks = super.getSubtasksFromEpic(epicId);
-        return subtasks;
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        load();
-        List<Task> history = super.getHistory();
-        return this.history;
-    }
-
-    @Override
-    public List<Task> getAllTasks() {
-        load();
-        List<Task> allTasks = new ArrayList<>();
-        allTasks.addAll(tasks);
-        allTasks.addAll(subtasks);
-        allTasks.addAll(epics);
-        return allTasks;
-    }
-
-    @Override
-    public List<Task> prioritizeTasks() {
-        load();
-        List<Task> allTasks = new ArrayList<>();
-        allTasks.addAll(tasks);
-        allTasks.addAll(subtasks);
-        allTasks.addAll(epics);
-        allTasks = super.prioritizeTasks();
-        return allTasks;
+    private String removeQuotesAndUnescape(String uncleanJson) {
+        String noQuotes = uncleanJson.replaceAll("^\"|\"$", "");
+        return StringEscapeUtils.unescapeJava(noQuotes);
     }
 }
+
+
+
+/*
+Этот код помог избавитьcя от ошибки. как написали, возможно сконвертировано в json дважды
+
+    private String removeQuotesAndUnescape(String uncleanJson) {
+        String noQuotes = uncleanJson.replaceAll("^\"|\"$", "");
+        return StringEscapeUtils.unescapeJava(noQuotes);
+    }
+*/
+
 
 
 

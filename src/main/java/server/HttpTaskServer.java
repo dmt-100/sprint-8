@@ -50,8 +50,11 @@ public class HttpTaskServer {
 
             String requestMethod = httpExchange.getRequestMethod() + "_" + type.toUpperCase();
 
+            if (uri.contains("subtask") && uri.contains("epic")) {
+                requestMethod = requestMethod.concat("_").concat(splitUries[3].toUpperCase());
+            }
             if (uri.contains("id")) {
-                requestMethod = httpExchange.getRequestMethod() + "_" + type.toUpperCase() + "_ID";
+                requestMethod = requestMethod + "_ID";
             }
 
             switch (requestMethod) {
@@ -72,6 +75,13 @@ public class HttpTaskServer {
                         OutputStream os = httpExchange.getResponseBody();
                         os.write(response.getBytes());
                     }
+                    break;
+                }
+                case "POST_TASK": {
+                    if (Pattern.matches("^/tasks/task$", path)) {
+
+                    }
+
                     break;
                 }
                 case "DELETE_TASK_ID": {
@@ -121,6 +131,18 @@ public class HttpTaskServer {
                         httpExchange.sendResponseHeaders(405, 0);
                     }
                     break;
+                }
+                case "GET_SUBTASK_EPIC_ID": {
+                    if (Pattern.matches("^/tasks/subtask/epic/$", path)) {
+                        String response = gson.toJson(fileBackedTaskManager.getSubtasksFromEpic(uuid));
+                        sendText(httpExchange, response);
+                        return;
+                    } else {
+                        httpExchange.sendResponseHeaders(405, 0);
+                        String response = "Ответ 405!";
+                        OutputStream os = httpExchange.getResponseBody();
+                        os.write(response.getBytes());
+                    }
                 }
                 case "GET_HISTORY": {
                     if (Pattern.matches("^/tasks/" + type.toLowerCase() + "$", path)) {

@@ -49,8 +49,8 @@ public class Main {
 
         Task task1 = new Task(
                 TaskType.TASK,
-                "Переезд1",
-                "Собрать коробки",
+                "Task1",
+                "Collect boxes",
                 Status.NEW,
                 dateTimeTestTask1,
                 50
@@ -60,8 +60,8 @@ public class Main {
         Epic epic1 = new Epic(
                 epicUuid,
                 TaskType.EPIC,
-                "Эпик1",
-                "Переезд",
+                "Epic1",
+                "Relocation",
                 Status.NEW,
                 dateTimeTestEpic1,
                 0,
@@ -70,8 +70,8 @@ public class Main {
 
         Epic epic2 = new Epic(
                 TaskType.EPIC,
-                "Эпик2",
-                "Переезд2",
+                "Epic2",
+                "Relocation",
                 Status.NEW,
                 subtasksList
         );
@@ -90,8 +90,8 @@ public class Main {
                         case 1:
                             httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Задача1",
-                                    "Собрать коробки",
+                                    "Task1",
+                                    "Collect boxes",
                                     Status.NEW,
                                     dateTimeTestTask1,
                                     50
@@ -99,24 +99,24 @@ public class Main {
 
                             httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Задача2",
-                                    "Упаковать кошку",
+                                    "Task2",
+                                    "Pack the cat",
                                     Status.NEW,
                                     dateTimeTestTask2,
                                     5
                             ));
                             httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Задача3",
-                                    "Собрать коробки",
+                                    "Task3",
+                                    "Collect boxes",
                                     Status.NEW,
                                     dateTimeTestTask3,
                                     50
                             ));
                             httpTaskManager.addTask(new Task(
                                     TaskType.TASK,
-                                    "Задача4",
-                                    "Упаковать кошку",
+                                    "Task4",
+                                    "Pack the cat",
                                     Status.NEW,
                                     dateTimeTestTask4,
                                     5
@@ -131,8 +131,8 @@ public class Main {
 //                            UUID epicId = UUID.fromString(scanner.next());
                             Subtask subtask1 = new Subtask(
                                     TaskType.SUBTASK,
-                                    "Подзадача1",
-                                    "Собрать коробки",
+                                    "Subtask1",
+                                    "Collect boxes",
                                     Status.NEW,
                                     dateTimeTestSubtask1,
                                     50,
@@ -141,8 +141,8 @@ public class Main {
 
                             Subtask subtask2 = new Subtask(
                                     TaskType.SUBTASK,
-                                    "Подзадача2",
-                                    "Упаковать кошку",
+                                    "Subtask1",
+                                    "Pack the cat",
                                     Status.NEW,
                                     dateTimeTestSubtask2,
                                     15,
@@ -270,7 +270,10 @@ public class Main {
                 case 12: // Тест ТЗ-8
 //                    httpTaskManager.save();
                     httpTaskManager.save();
-                    httpTaskManager.getAllTasksByTaskType(TaskType.TASK);
+                    HttpTaskManager httpTaskManager1 = new HttpTaskManager(URI.create("http://localhost:8078/"), true);
+
+//                    httpTaskManager.getAllTasksByTaskType(TaskType.TASK);
+//                    httpTaskManager.getTask(UUID.fromString("b74fc9f0-e8c1-4de6-86bd-ffa437e17bdb"));
                     break;
 
                 case 0: // Выход

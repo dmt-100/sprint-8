@@ -44,7 +44,7 @@ public class KVTaskClient {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri + "load/" + key + "?API_TOKEN=" + this.tokenId))
+                .uri(URI.create(uri + "load/" + key + "?API_TOKEN=" + tokenId))
                 .GET()
                 .build();
         HttpResponse<String> response;
@@ -61,9 +61,7 @@ public class KVTaskClient {
         }
     }
 
-
-    // То есть ключ получаем из запроса к серверу??
-    public String register() {
+    private String register() {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
