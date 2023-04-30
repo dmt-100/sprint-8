@@ -2,22 +2,48 @@ package main.java.managers;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import main.java.server.KVServer;
 import main.java.server.KVTaskClient;
+import main.java.service.Status;
 import main.java.service.TaskType;
 import main.java.tasks.Epic;
 import main.java.tasks.Subtask;
 import main.java.tasks.Task;
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HttpTaskManager extends FileBackedTasksManager {
     private final Gson gson = Managers.getGson();
-    private final KVTaskClient client;
+    private KVTaskClient client;
     URI uri;
+
+
+// ---------------------------------------------- TEST ----------------------------------------------
+    public static void main(String[] args) throws IOException {
+        LocalDateTime dateTimeTestTask1 = LocalDateTime.parse("2000-01-01T01:00:00");
+
+        Task task1 = new Task(
+                TaskType.TASK,
+                "Task1",
+                "Collect boxes",
+                Status.NEW,
+                dateTimeTestTask1,
+                50
+        );
+
+        KVServer kvServer = new KVServer();
+        kvServer.start();
+        HttpTaskManager httpTaskManager = new HttpTaskManager(URI.create("http://localhost:8078/"), false);
+        httpTaskManager.addTask(task1);
+    }
+// ---------------------------------------------- TEST ----------------------------------------------
+
 
     public HttpTaskManager(URI uri, boolean load) {
         this.client = new KVTaskClient(uri);
@@ -52,13 +78,11 @@ public class HttpTaskManager extends FileBackedTasksManager {
                 .map(Task::getId)
                 .collect(Collectors.toList()));
         client.put("history", gson.toJson(history));
-
     }
 
     private void load() {
         ArrayList<Task> tasks = gson.fromJson(removeQuotesAndUnescape(client.load("tasks")),
-                new TypeToken<ArrayList<Task>>() {
-                }.getType());
+                new TypeToken<ArrayList<Task>>() {}.getType());
         for (Task task : tasks) {
             getTasks().put(task.getId(), task);
         }

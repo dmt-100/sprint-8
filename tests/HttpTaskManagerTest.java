@@ -45,7 +45,6 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
 
     HttpTaskManager httpTaskManager1;
     HttpTaskManager httpTaskManager2;
-    HttpTaskManagerTest httpTaskManagerTest;
 
     @BeforeEach
     void init()  throws IOException {

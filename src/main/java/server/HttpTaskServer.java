@@ -14,22 +14,21 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class HttpTaskServer {
-    public static final int PORT = 8080;
+    private static final int PORT = 8078;
     private final TasksManager fileBackedTaskManager = Managers.getDefaultFileBacked();
-    private Gson gson;
-    private HttpServer httpServer;
-    private List<String> post;
+    private final Gson gson;
+    private final HttpServer httpServer;
 
     public HttpTaskServer() throws IOException {
         gson = Managers.getGson();
-        InetSocketAddress socket = new InetSocketAddress(8080);
+        InetSocketAddress socket = new InetSocketAddress(8078);
         httpServer = HttpServer.create(new InetSocketAddress(socket.getAddress(), PORT), 0);
         httpServer.createContext("/tasks", this::handleTasks);
     }
@@ -39,15 +38,13 @@ public class HttpTaskServer {
     }
 
     private void handleTasks(HttpExchange httpExchange) {
-        try {
+        try (httpExchange) {
 
             String uri = String.valueOf(httpExchange.getRequestURI());
-            String[] splitUries = uri.split("/");
             String path = httpExchange.getRequestURI().getPath();
 
-
-
             UUID uuid = null;
+            String[] splitUries = uri.split("/");
             String type = splitUries[2].toUpperCase();
             if (uri.contains("id")) {
                 String[] sp = uri.split("=");
@@ -93,10 +90,8 @@ public class HttpTaskServer {
                     String json = gson.toJson(taskPost);
                     httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
                     httpExchange.sendResponseHeaders(200, 0);
-                    httpExchange.getResponseBody().write(json
-                            .getBytes(UTF_8));
+                    httpExchange.getResponseBody().write(json.getBytes(UTF_8));
                     System.out.println("Задача отправлена обратно");
-
                     break;
                 }
                 case "DELETE_TASK_ID": {
@@ -169,6 +164,17 @@ public class HttpTaskServer {
                     }
                     break;
                 }
+                case "GET_PRIORITIZED": {
+                    if (Pattern.matches("^/tasks/prioritized$", path)) {
+                        String response = gson.toJson(fileBackedTaskManager.prioritizeTasks());
+                        httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+                        httpExchange.sendResponseHeaders(200, 0);
+                        httpExchange.getResponseBody().write(response.getBytes(UTF_8));
+                    } else {
+                        httpExchange.sendResponseHeaders(405, 0);
+                    break;
+                    }
+                }
 
                 default: {
                     System.out.println("Ждем GET или DELETE запрос, а получили - " + requestMethod);
@@ -177,8 +183,6 @@ public class HttpTaskServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            httpExchange.close();
         }
     }
 

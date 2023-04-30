@@ -13,7 +13,7 @@ public abstract class Managers {
     private static final String sep = File.separator;
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
     public static File file = new File(saveTasksFilePath);
-    private static final URI BASE_URL = URI.create("http://localhost:8078/");
+    private static URI BASE_URL = URI.create("http://localhost:8078/");
 
     public static  HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
@@ -28,5 +28,9 @@ public abstract class Managers {
 
     public static HttpTaskManager getDefault()  {
         return new HttpTaskManager(BASE_URL, false);
+    }
+
+    public static URI getBaseUrl() {
+        return BASE_URL;
     }
 }

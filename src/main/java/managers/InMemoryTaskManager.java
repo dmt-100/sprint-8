@@ -277,7 +277,7 @@ public class InMemoryTaskManager implements TasksManager {
 
     // case 11: сортировка задач по стартовому времени
     @Override
-    public List<Task> prioritizeTasks() {
+    public List<Task> prioritizeTasks() { // эпики в сортировку не входят
         List<Task> prioritizedTasks;
         if (tasks.size() > 1) {
             prioritizedTasks = new ArrayList<>(
