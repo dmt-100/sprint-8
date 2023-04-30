@@ -37,8 +37,4 @@ public interface TasksManager {
 
     List<Task> prioritizeTasks();
 
-
-// -------------- HttpTaskManager --------------
-    public void test() throws IOException, InterruptedException;
-
 }

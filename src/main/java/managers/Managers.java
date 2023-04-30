@@ -6,7 +6,6 @@ import main.java.intefaces.TasksManager;
 import main.java.server.GsonManager;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 
 public abstract class Managers {

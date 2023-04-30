@@ -27,6 +27,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public FileBackedTasksManager() {
     }
 
+
     private static FileBackedTasksManager loadFromFile(File file) {
         var manager = new FileBackedTasksManager(file);
         try {
@@ -36,7 +37,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         return manager;
     }
-
 
     protected void save() {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
@@ -175,42 +175,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    public List<Task> getHistoryTasks() {
-        List<Task> tasks;
-        if (readCsvHistoryFromFile().size() > 1) {
-            tasks = readCsvHistoryFromFile().stream()
-                    .flatMap(s -> taskfromString().stream()
-                            .filter(task -> task.getId().toString().equals(s)))
-                    .collect(Collectors.toList());
-            save();
-        } else {
-            tasks = new ArrayList<>();
-        }
-        return tasks;
-    }
-
-    private List<String> readCsvHistoryFromFile() {
-        List<UUID> listOfAddedTasks = null;
-        List<String> listOfStrings;
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String lastLine = null;
-            String line = br.readLine();
-            while (line != null) {
-                lastLine = line;
-                line = br.readLine();
-            }
-            if (lastLine == null) {
-                throw new ManagerSaveException("File is empty.");
-            }
-            listOfStrings = new ArrayList<>(Arrays.asList(lastLine.split(",")));
-            line = br.readLine();
-        } catch (IOException e) {
-            throw new ManagerSaveException();
-        }
-        return listOfStrings;
-    }
-
-// переопределенные методы InMemoryTaskManager
+    // переопределенные методы InMemoryTaskManager
     @Override
     public void addTask(Task task) { // добавление
         super.addTask(task);

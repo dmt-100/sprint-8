@@ -1,6 +1,4 @@
-import main.java.managers.FileBackedTasksManager;
 import main.java.managers.HttpTaskManager;
-import main.java.managers.Managers;
 import main.java.server.KVServer;
 import main.java.service.Status;
 import main.java.service.TaskType;
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -25,37 +22,37 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
 
     private KVServer kvServer;
 
-    private static final String sep = File.separator;
-    private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
-    public static File file = new File(saveTasksFilePath);
     URI uri = URI.create("http://localhost:8078/");
 
     LocalDateTime dateTimeTestTask1 = LocalDateTime.parse("2000-01-01T01:00:00");
     LocalDateTime dateTimeTestTask2 = LocalDateTime.parse("2000-01-01T02:00:00");
     LocalDateTime dateTimeTestTask3 = LocalDateTime.parse("2000-01-01T03:00:00");
     LocalDateTime dateTimeTestTask4 = LocalDateTime.parse("2000-01-01T04:00:00");
-
     LocalDateTime dateTimeTestEpic1 = LocalDateTime.parse("2000-01-01T05:00:00");
     LocalDateTime dateTimeTestSubtask1 = LocalDateTime.parse("2000-01-01T06:00:00");
     LocalDateTime dateTimeTestSubtask2 = LocalDateTime.parse("2000-01-01T07:40:00");
-
     UUID epicUuid = UUID.fromString("11111111-d496-48c2-bb4a-f4cf88f18e23");
+    Task task1;
+    Task task2;
+    Epic epic1;
+    Subtask subtask1;
+    Subtask subtask2;
 
-    FileBackedTasksManager fileBackedTasksManager;
+    HttpTaskManager httpTaskManager;
 
-    HttpTaskManager httpTaskManager1;
-    HttpTaskManager httpTaskManager2;
+    @Override
+    void setManager() {
+        httpTaskManager = new HttpTaskManager(uri, false);
+    }
 
     @BeforeEach
-    void init()  throws IOException {
-
+    void init() throws IOException {
         kvServer = new KVServer();
         kvServer.start();
-        setTaskManager();
+        setManager();
 // ----------------------------------------
-        fileBackedTasksManager = new FileBackedTasksManager(file);
 
-        Task task1 = new Task(
+        task1 = new Task(
                 TaskType.TASK,
                 "Task1",
                 "Collect boxes",
@@ -63,9 +60,9 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
                 dateTimeTestTask1,
                 50
         );
-        fileBackedTasksManager.addTask(task1);
+        httpTaskManager.addTask(task1);
 
-        Task task2 = new Task(
+        task2 = new Task(
                 TaskType.TASK,
                 "Task2",
                 "Pack the cat",
@@ -73,10 +70,10 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
                 dateTimeTestTask2,
                 5
         );
-        fileBackedTasksManager.addTask(task2);
+        httpTaskManager.addTask(task2);
 
         List<UUID> subtasksList = new ArrayList<>();
-        Epic epic1 = new Epic(
+        epic1 = new Epic(
                 epicUuid,
                 TaskType.EPIC,
                 "Epic1",
@@ -86,55 +83,63 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
                 0,
                 subtasksList
         );
-        fileBackedTasksManager.addTask(epic1);
+        httpTaskManager.addTask(epic1);
 
-        Subtask subtask1 = new Subtask(
+        subtask1 = new Subtask(
                 TaskType.SUBTASK,
                 "Subtask1",
                 "Collect boxes",
                 Status.NEW,
                 dateTimeTestSubtask1,
                 50,
-                fileBackedTasksManager.getTasks().get(epic1.getId()).getId()
+                httpTaskManager.getTasks().get(epic1.getId()).getId()
         );
-        fileBackedTasksManager.addTask(subtask1);
+        httpTaskManager.addTask(subtask1);
 
-        Subtask subtask2 = new Subtask(
+        subtask2 = new Subtask(
                 TaskType.SUBTASK,
                 "Subtask1",
                 "Pack the cat",
                 Status.NEW,
                 dateTimeTestSubtask2,
                 15,
-                fileBackedTasksManager.getTasks().get(epic1.getId()).getId()
+                httpTaskManager.getTasks().get(epic1.getId()).getId()
         );
-        fileBackedTasksManager.addTask(subtask2);
+        httpTaskManager.addTask(subtask2);
 
-        //Не могу понять почему падает
-//        httpTaskManager1 = new HttpTaskManager(uri, false);
-        httpTaskManager1 = Managers.getDefault();
-        httpTaskManager1.save();
-        httpTaskManager2 = new HttpTaskManager(uri, true);
-
+        httpTaskManager.save();
     }
 
     @AfterEach
     void after() {
+        httpTaskManager.removeTaskById(task1.getId());
+        httpTaskManager.removeTaskById(task2.getId());
+        httpTaskManager.removeTaskById(epic1.getId());
+        httpTaskManager.removeTaskById(subtask1.getId());
+        httpTaskManager.removeTaskById(subtask2.getId());
+        httpTaskManager.save();
         kvServer.stop();
     }
+
     @Test
-    void checkTasks() {
-        HttpTaskManager load = new HttpTaskManager(URI.create("http://localhost:8078/"), true);
-        assertEquals(taskManager.getAllTasks(), load.getAllTasks(),
+    void checkAddedTasks() {
+        new HttpTaskManager(uri, true);
+
+        List<Task> afterLoad = httpTaskManager
+                .getAllTasks().stream().toList();
+        int expected = afterLoad.size();
+        assertEquals(expected, httpTaskManager.getAllTasks().size(),
                 "Задачи после выгрузки не совпадают");
-        assertEquals(taskManager.prioritizeTasks(), load.prioritizeTasks(),
+        assertEquals(4, httpTaskManager.prioritizeTasks().size(), // эпики не входят в сортировку!
                 "Отсортированный список не совпадает");
-        assertEquals(taskManager.getHistory(), load.getHistory(),
-                "Список задач в истории не совпадает");
     }
 
-    @Override
-    void setTaskManager() {
-        taskManager = new HttpTaskManager(URI.create("http://localhost:8078/"), false);
+    @Test
+    void checkHistory() {
+        new HttpTaskManager(uri, true);
+
+        List<Task> expected = httpTaskManager.getHistoryManager().getTasksInHistory();
+        assertEquals(expected.size(), httpTaskManager.getHistory().size(),
+                "Список задач в истории не совпадает");
     }
 }

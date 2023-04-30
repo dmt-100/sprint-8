@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TasksManager {
     private final Map<UUID, Task> tasks = new HashMap<>();
-    private List<Task> prioritizedTasks = new ArrayList<>();
-    //    private List<Task> prioritizedTasks2 = new ArrayList<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -170,8 +168,9 @@ public class InMemoryTaskManager implements TasksManager {
 
         if (tasks.containsKey(idInput)) {
             task = tasks.get(idInput);
+
             historyManager.add(task);
-            System.out.println(tasks.get(idInput));
+
         } else if (tasks.isEmpty()) {
             System.out.println("Мапа пуста");
         } else {
@@ -193,7 +192,6 @@ public class InMemoryTaskManager implements TasksManager {
     // case 6: Удалить по идентификатору. ----------------------------------------
     @Override
     public void removeTaskById(UUID id) {
-        Epic epic;
         try {
             if (tasks.get(id).getTaskType().equals(TaskType.EPIC)) {
 
@@ -207,7 +205,6 @@ public class InMemoryTaskManager implements TasksManager {
             tasks.keySet().removeIf(u -> u.equals(id)); // Predicate
 
             historyManager.remove(id);
-            System.out.println("Задача удалена");
 
             if (tasks.containsKey(id)) {
                 if (tasks.get(id).getTaskType().equals(TaskType.SUBTASK)) {
@@ -297,12 +294,6 @@ public class InMemoryTaskManager implements TasksManager {
     }
 
     // ==========================   Getters       ==========================
-
-
-    @Override
-    public void test() throws IOException, InterruptedException {
-
-    }
 
     public Map<UUID, Task> getTasks() {
         return tasks;

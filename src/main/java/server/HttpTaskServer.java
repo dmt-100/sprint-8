@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -81,16 +80,13 @@ public class HttpTaskServer {
                     break;
                 }
                 case "POST_TASK": {
-                    String body = new String(httpExchange.getRequestBody().readAllBytes(), UTF_8);
                     Type typePost = new TypeToken<Task>() {}.getType();
-                    Task task = gson.fromJson(body, typePost);
+                    Task task = gson.fromJson(readText(httpExchange), typePost);
                     fileBackedTaskManager.addTask(task);
 
                     Task taskPost = fileBackedTaskManager.getTask(task.getId());
                     String json = gson.toJson(taskPost);
-                    httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-                    httpExchange.sendResponseHeaders(200, 0);
-                    httpExchange.getResponseBody().write(json.getBytes(UTF_8));
+                    sendText(httpExchange, json);
                     System.out.println("Задача отправлена обратно");
                     break;
                 }
@@ -167,9 +163,7 @@ public class HttpTaskServer {
                 case "GET_PRIORITIZED": {
                     if (Pattern.matches("^/tasks/prioritized$", path)) {
                         String response = gson.toJson(fileBackedTaskManager.prioritizeTasks());
-                        httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-                        httpExchange.sendResponseHeaders(200, 0);
-                        httpExchange.getResponseBody().write(response.getBytes(UTF_8));
+                        sendText(httpExchange, response);
                     } else {
                         httpExchange.sendResponseHeaders(405, 0);
                     break;

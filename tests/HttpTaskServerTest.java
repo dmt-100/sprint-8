@@ -72,7 +72,6 @@ class HttpTaskServerTest  {
             epicUuid
     );
 
-
     HttpTaskServerTest() throws IOException {
     }
 
@@ -99,8 +98,6 @@ class HttpTaskServerTest  {
         }
         taskServer.stop();
     }
-
-
 
     @Test
     void getTasks() throws IOException, InterruptedException {

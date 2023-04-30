@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 public class HttpTaskManager extends FileBackedTasksManager {
     private final Gson gson = Managers.getGson();
     private KVTaskClient client;
-    URI uri;
-
 
 // ---------------------------------------------- TEST ----------------------------------------------
     public static void main(String[] args) throws IOException {
@@ -73,7 +71,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
                 .collect(Collectors.toList()));
         client.put("epics", gson.toJson(epics));
 
-        String history = gson.toJson(getHistoryTasks()
+        String history = gson.toJson(getHistoryManager().getTasksInHistory()
                 .stream()
                 .map(Task::getId)
                 .collect(Collectors.toList()));
@@ -118,14 +116,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
 
 
-/*
-Этот код помог избавитьcя от ошибки. как написали, возможно сконвертировано в json дважды
 
-    private String removeQuotesAndUnescape(String uncleanJson) {
-        String noQuotes = uncleanJson.replaceAll("^\"|\"$", "");
-        return StringEscapeUtils.unescapeJava(noQuotes);
-    }
-*/
 
 
 
@@ -134,6 +125,12 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
 /*
 // ======================================= ПОДСКАЗКИ для меня =======================================
+
+Этот код помог избавитьcя от ошибки. как написали, возможно сконвертировано в json дважды
+    private String removeQuotesAndUnescape(String uncleanJson) {
+        String noQuotes = uncleanJson.replaceAll("^\"|\"$", "");
+        return StringEscapeUtils.unescapeJava(noQuotes);
+    }
 
 
 В этом классе должны быть методы load и save. save - переопределенный метод класса-родителя, в котором происходит преборазование коллекций задач/подзадач/эпиков в json. И дальнейшее их сохранение через client.
