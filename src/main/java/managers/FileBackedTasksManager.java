@@ -108,7 +108,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         while (check) {
 
             Map<UUID, UUID> subtasksOfEpicField = new HashMap<>();
-            List<UUID> epicsSubtasks = new ArrayList<>();
+            List<UUID> epicsSubtasks;
             List<Epic> epicList = new ArrayList<>();
 
             for (List<String> line : readFromCsvTasks()) {

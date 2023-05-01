@@ -6,16 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="db70d58e-657e-4b76-bf39-64aa292f9562" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intefaces/TasksManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/HttpTaskManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/managers/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/managers/Managers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/FileBackedTasksManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/FileBackedTasksManagerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/HttpTaskServerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/InMemoryTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/InMemoryTaskManagerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/TaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/TaskManagerTest.java" afterDir="false" />
     </list>
@@ -100,7 +95,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.HttpTaskManagerTest">
+  <component name="RunManager" selected="JUnit.All in Sprint 8">
     <configuration name="All in Sprint 8" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
@@ -109,39 +104,41 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HttpTaskManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Sprint 8" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="HttpTaskManagerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="InMemoryTaskManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="InMemoryTaskManagerTest.checkTimeCrossingTestTaskBetweenTime" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="InMemoryTaskManagerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="InMemoryTaskManagerTest.allSubtasksWithStatusNew" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Sprint 8" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="InMemoryTaskManagerTest" />
-      <option name="METHOD_NAME" value="allSubtasksWithStatusNew" />
+      <option name="METHOD_NAME" value="checkTimeCrossingTestTaskBetweenTime" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InMemoryTaskManagerTest.allSubtasksWithStatusNewAndDone" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="InMemoryTaskManagerTest.checkTimeCrossingTestTaskByStartAndEndTimeSubtask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Sprint 8" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="InMemoryTaskManagerTest" />
-      <option name="METHOD_NAME" value="allSubtasksWithStatusNewAndDone" />
+      <option name="METHOD_NAME" value="checkTimeCrossingTestTaskByStartAndEndTimeSubtask" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InMemoryTaskManagerTest.testCase11GetPrioritizedTasksWhenEmptyMap" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="InMemoryTaskManagerTest" />
+      <option name="METHOD_NAME" value="testCase11GetPrioritizedTasksWhenEmptyMap" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InMemoryTaskManagerTest.testCase11GetPrioritizedTasksWithStandardCondition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Sprint 8" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="InMemoryTaskManagerTest" />
+      <option name="METHOD_NAME" value="testCase11GetPrioritizedTasksWithStandardCondition" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -149,11 +146,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.HttpTaskManagerTest" />
         <item itemvalue="JUnit.All in Sprint 8" />
-        <item itemvalue="JUnit.InMemoryTaskManagerTest" />
-        <item itemvalue="JUnit.InMemoryTaskManagerTest.allSubtasksWithStatusNewAndDone" />
-        <item itemvalue="JUnit.InMemoryTaskManagerTest.allSubtasksWithStatusNew" />
+        <item itemvalue="JUnit.InMemoryTaskManagerTest.checkTimeCrossingTestTaskByStartAndEndTimeSubtask" />
+        <item itemvalue="JUnit.InMemoryTaskManagerTest.checkTimeCrossingTestTaskBetweenTime" />
+        <item itemvalue="JUnit.InMemoryTaskManagerTest.testCase11GetPrioritizedTasksWithStandardCondition" />
+        <item itemvalue="JUnit.InMemoryTaskManagerTest.testCase11GetPrioritizedTasksWhenEmptyMap" />
       </list>
     </recent_temporary>
   </component>
@@ -188,24 +185,49 @@
           <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/managers/InMemoryHistoryManager.java</url>
-          <line>60</line>
-          <option name="timeStamp" value="304" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/InMemoryTaskManagerTest.java</url>
-          <line>227</line>
+          <line>228</line>
           <option name="timeStamp" value="310" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/InMemoryTaskManagerTest.java</url>
-          <line>112</line>
+          <line>113</line>
           <option name="timeStamp" value="312" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/tests/InMemoryTaskManagerTest.java</url>
-          <line>140</line>
-          <option name="timeStamp" value="313" />
+          <url>file://$PROJECT_DIR$/src/main/java/server/HttpTaskServer.java</url>
+          <line>207</line>
+          <option name="timeStamp" value="318" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java</url>
+          <line>271</line>
+          <option name="timeStamp" value="327" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/HttpTaskManagerTest.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="328" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/HttpTaskManagerTest.java</url>
+          <line>96</line>
+          <option name="timeStamp" value="329" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/managers/FileBackedTasksManager.java</url>
+          <line>238</line>
+          <option name="timeStamp" value="336" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java</url>
+          <line>104</line>
+          <option name="timeStamp" value="343" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/managers/InMemoryTaskManager.java</url>
+          <line>103</line>
+          <option name="timeStamp" value="344" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -215,6 +237,7 @@
         <PinnedItemInfo parentTag="main.java.managers.FileBackedTasksManager" memberName="prioritizedTasks" />
         <PinnedItemInfo parentTag="jdk.internal.net.http.HttpResponseImpl" memberName="version" />
         <PinnedItemInfo parentTag="java.lang.Module" memberName="loader" />
+        <PinnedItemInfo parentTag="main.java.managers.HttpTaskManager" memberName="tasks" />
         <PinnedItemInfo parentTag="main.java.managers.HttpTaskManager" memberName="client" />
         <PinnedItemInfo parentTag="jdk.internal.net.http.ImmutableHttpRequest" memberName="method" />
       </pinned-members>
@@ -229,6 +252,8 @@
         <watch expression="((HashMap.Node)((HashMap)((FileBackedTasksManager)taskServer.fileBackedTaskManager).tasks).entrySet().toArray()[2]).getValue()" custom="main.java.managers.FileBackedTasksManager,java.util.HashMap.Node,java.util.HashMap" />
         <watch expression="taskServer.fileBackedTaskManager" />
         <watch expression="((HashMap)((FileBackedTasksManager)fileBackedTaskManager).tasks).entrySet().toArray()[1]" custom="main.java.managers.FileBackedTasksManager,java.util.HashMap" />
+        <watch expression="httpTaskManager" language="JAVA" />
+        <watch expression="((HashMap)((HttpTaskManager)this).tasks).entrySet().toArray()[2]" custom="java.util.HashMap,main.java.managers.HttpTaskManager" />
       </configuration>
       <configuration name="Application">
         <watch expression="((HttpServerImpl)((KVServer)this).httpServer).server" custom="main.java.server.KVServer,sun.net.httpserver.HttpServerImpl" />

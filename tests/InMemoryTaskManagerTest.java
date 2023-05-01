@@ -1,3 +1,4 @@
+import main.java.intefaces.TasksManager;
 import main.java.managers.HttpTaskManager;
 import main.java.managers.InMemoryTaskManager;
 import main.java.server.KVServer;
@@ -38,10 +39,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     Subtask subtask1;
     Subtask subtask2;
 
-    InMemoryTaskManager inMemoryTaskManager;
+    TasksManager inMemoryTaskManager;
 
     @Override
-    void setManager() {
+    void setTaskManager() {
         inMemoryTaskManager = new InMemoryTaskManager();
     }
 
@@ -49,7 +50,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @BeforeEach
     void init() {
-        setManager();
+        setTaskManager();
 
         task1 = new Task(
                 TaskType.TASK,
@@ -231,6 +232,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
         init();
     }
+
 
 
 }

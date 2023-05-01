@@ -7,7 +7,6 @@ import main.java.service.TaskType;
 import main.java.tasks.Epic;
 import main.java.tasks.Task;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -18,7 +17,7 @@ public class InMemoryTaskManager implements TasksManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
-    public void addTask(Task task) {
+    public void addTask(Task task) { // переделать
         if (task.getId() == null) {
             task.setId(java.util.UUID.randomUUID());
         }
@@ -51,7 +50,7 @@ public class InMemoryTaskManager implements TasksManager {
 
                     if (checkTimeCrossing(startTime, endTime, task.getName())) {
                         tasks.put(task.getId(), task);
-                        tasks.get(task.getEpicId()).getSubtasks().add(task.getId()); // список сабстасков эпика
+
                         System.out.println("Подзадача: " + task.getName() + ", успешно добавлена");
 
                         UUID epicUuid = task.getEpicId();
@@ -79,9 +78,10 @@ public class InMemoryTaskManager implements TasksManager {
                         );
 
                         tasks.put(epicUuid, newEpic);
+                        tasks.get(task.getEpicId()).getSubtasks().add(task.getId()); // список сабстасков эпика
                         System.out.println("Эпик: " + task.getName() + ", успешно обновлен");
 
-                        updateTask(newEpic);
+//                        updateTask(newEpic);
                     }
                     return;
                 }

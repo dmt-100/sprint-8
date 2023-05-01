@@ -1,3 +1,4 @@
+import main.java.intefaces.TasksManager;
 import main.java.managers.FileBackedTasksManager;
 import main.java.service.Status;
 import main.java.service.TaskType;
@@ -21,9 +22,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     private static final String sep = File.separator;
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
     private static File file = new File(saveTasksFilePath);
-    FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-
-
+    TasksManager fBTM;
     List<UUID> subtasks = new ArrayList<>();
 
     UUID epicUuid = UUID.fromString("11111111-d496-48c2-bb4a-f4cf88f18e23");
@@ -90,33 +89,38 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     static UUID randomUuid = UUID.randomUUID();
 
+    @Override
+    void setTaskManager() {
+        fBTM = new FileBackedTasksManager(file);
+    }
 
     @BeforeEach
-    void createFirst() {
-        fileBackedTasksManager.addTask(task);
-        fileBackedTasksManager.addTask(epic);
+    void init() {
+        setTaskManager();
+        fBTM.addTask(task);
+        fBTM.addTask(epic);
         subtask.setEpicId(epic.getId());
-        fileBackedTasksManager.addTask(subtask);
+        fBTM.addTask(subtask);
     }
 
     void get() {
-        fileBackedTasksManager.getTask(task.getId());
-        fileBackedTasksManager.getTask(epic.getId());
-        fileBackedTasksManager.getTask(subtask.getId());
+        fBTM.getTask(task.getId());
+        fBTM.getTask(epic.getId());
+        fBTM.getTask(subtask.getId());
     }
 
     @AfterEach
     void clearHistory() {
-        if (fileBackedTasksManager.getTasks().containsKey(task.getId())) {
-            fileBackedTasksManager.removeTaskById(task.getId());
+        if (fBTM.getTasks().containsKey(task.getId())) {
+            fBTM.removeTaskById(task.getId());
         }
-        if (fileBackedTasksManager.getTasks().containsKey(subtask.getId())) {
-            fileBackedTasksManager.removeTaskById(subtask.getId());
+        if (fBTM.getTasks().containsKey(subtask.getId())) {
+            fBTM.removeTaskById(subtask.getId());
         }
-        if (fileBackedTasksManager.getTasks().containsKey(epic.getId())) {
-            fileBackedTasksManager.removeTaskById(epic.getId());
+        if (fBTM.getTasks().containsKey(epic.getId())) {
+            fBTM.removeTaskById(epic.getId());
         }
-        fileBackedTasksManager.getTasks().clear();
+        fBTM.getTasks().clear();
     }
 
     // =================================== /case TimeCrossing/ private boolean checkTimeCrossing(Task task)=============
@@ -135,7 +139,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         System.setOut(new PrintStream(outContent));
 
         task2.setStartTime(testDateTimeTask); // начальное время попадает в отрезок времени task1
-        fileBackedTasksManager.addTask(task2);
+        fBTM.addTask(task2);
 
         String expectedOutput = "Для задачи: " + task2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -147,7 +151,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
         task2.setStartTime(testDateTimeTask.minusMinutes(2)); // конечное время попадает в отрезок времени task
         task2.setDuration(50);
-        fileBackedTasksManager.addTask(task2);
+        fBTM.addTask(task2);
 
         String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -161,7 +165,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         System.setOut(new PrintStream(outContent));
 
         task2.setStartTime(testDateTimeTask.minusMinutes(1));
-        fileBackedTasksManager.addTask(task2);
+        fBTM.addTask(task2);
 
         String expectedOutput = "Для задачи: " + task2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -174,7 +178,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         task2.setStartTime(testDateTimeTask.minusMinutes(10));
         task2.setEndTime(task2.getStartTime().plusMinutes(50)); // совпадает с конечным временем на .equals
         task2.setDuration(50);
-        fileBackedTasksManager.addTask(task2);
+        fBTM.addTask(task2);
 
         String expectedOutput2 = "Для задачи: " + task2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -189,7 +193,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
         task2.setStartTime(testDateTimeTask); //"2000-01-01T00:01:00"
         task2.setDuration(48);
-        fileBackedTasksManager.addTask(task2);
+        fBTM.addTask(task2);
 
         String expectedOutput = "Для задачи: " + task2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -203,7 +207,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         System.setOut(new PrintStream(outContent));
 
         subtask2.setStartTime(testDateTimeTask); // начальное время попадает в отрезок времени task
-        fileBackedTasksManager.addTask(subtask2);
+        fBTM.addTask(subtask2);
 
         String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -215,7 +219,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
         subtask2.setStartTime(testDateTimeTask.minusMinutes(2)); // конечное время попадает в отрезок времени task
         subtask2.setDuration(50);
-        fileBackedTasksManager.addTask(subtask2);
+        fBTM.addTask(subtask2);
 
         String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -229,7 +233,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         System.setOut(new PrintStream(outContent));
 
         subtask2.setStartTime(testDateTimeTask.minusMinutes(1));
-        fileBackedTasksManager.addTask(subtask2);
+        fBTM.addTask(subtask2);
 
         String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -241,7 +245,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
         subtask2.setStartTime(testDateTimeTask.minusMinutes(10));
         subtask2.setDuration(49); // совпадает с конечным временем на .equals
-        fileBackedTasksManager.addTask(subtask2);
+        fBTM.addTask(subtask2);
 
         String expectedOutput2 = "Для задачи: " + subtask2.getName() + ", нужно другое конечное время.";
         String actualOutput2 = outContent2.toString().trim();
@@ -256,7 +260,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
         subtask2.setStartTime(testDateTimeTask);
         subtask2.setDuration(48);
-        fileBackedTasksManager.addTask(subtask2);
+        fBTM.addTask(subtask2);
 
         String expectedOutput = "Для задачи: " + subtask2.getName() + ", нужно другое стартовое время.";
         String actualOutput = outContent.toString().trim();
@@ -271,7 +275,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         System.setOut(new PrintStream(outContent));
 
         LocalDateTime actualEpicEndTime = subtask.getEndTime();
-        LocalDateTime expectedEpicEndTime = fileBackedTasksManager.getTasks().get(epic.getId()).getEndTime();
+        LocalDateTime expectedEpicEndTime = fBTM.getTasks().get(epic.getId()).getEndTime();
 
         assertEquals(actualEpicEndTime, expectedEpicEndTime);
     }
@@ -285,19 +289,19 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     @Test
     void testCase1AddNewTask1() { // a. Со стандартным поведением. (из ТЗ)
 //        fileBackedTasksManager.addNewTask(task);
-        assertEquals(task, fileBackedTasksManager.getTasks().get(task.getId()));
+        assertEquals(task, fBTM.getTasks().get(task.getId()));
     }
 
     @Test
     void testCase1AddNewTask2() { // b. С пустым списком задач.
-        fileBackedTasksManager.getTasks().clear();
-        Task taskActual = fileBackedTasksManager.getTask(task.getId());
+        fBTM.getTasks().clear();
+        Task taskActual = fBTM.getTask(task.getId());
         assertNull(taskActual);
     }
 
     @Test
     void testCase1AddNewTask3() { // c. С неверным идентификатором задачи (пустой и/или несуществующий идентификатор).
-        Subtask taskActual = (Subtask) fileBackedTasksManager.getTask(wrongUuid);
+        Subtask taskActual = (Subtask) fBTM.getTask(wrongUuid);
         assertNull(taskActual);
     }
 // ====================== /case 2/ List<Task> getAllTasksByTaskType(TaskType taskType) ======================
@@ -305,11 +309,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     @Test
     void testCase2GetAllTasksByTaskTypeWithStandartCondition() {   // a. Со стандартным поведением. (из ТЗ)
         List<Task> epics;
-        epics = fileBackedTasksManager.getAllTasksByTaskType(TaskType.EPIC); // return List<Task>
-        assertEquals(epics.get(0), fileBackedTasksManager.getTasks().get(epic.getId()));
+        epics = fBTM.getAllTasksByTaskType(TaskType.EPIC); // return List<Task>
+        assertEquals(epics.get(0), fBTM.getTasks().get(epic.getId()));
 
-        fileBackedTasksManager.getTasks().clear();
-        epics = fileBackedTasksManager.getAllTasksByTaskType(TaskType.EPIC);
+        fBTM.getTasks().clear();
+        epics = fBTM.getAllTasksByTaskType(TaskType.EPIC);
 
         assertEquals(new ArrayList<>(), epics);
     }
@@ -318,7 +322,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     void testCase2GetAllTasksByTaskTypeFromEmptyMap() {  // b. С пустым списком задач.
         clearHistory();
         List<Task> epics;
-        epics = fileBackedTasksManager.getAllTasksByTaskType(TaskType.EPIC);
+        epics = fBTM.getAllTasksByTaskType(TaskType.EPIC);
 
         assertEquals(new ArrayList<>(), epics);
     }
@@ -326,13 +330,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     // ============================= /case 3/ void removeTasksByTasktype(TaskType taskType) =============================
     @Test
     void testCase3RemoveTasksByTasktypeWithStandartCondition() {  // a. Со стандартным поведением. (из ТЗ)
-        assertEquals(TaskType.EPIC, fileBackedTasksManager.getTasks().get(epic.getId()).getTaskType());
+        assertEquals(TaskType.EPIC, fBTM.getTasks().get(epic.getId()).getTaskType());
     }
 
     @Test
     void testCase3RemoveTasksByTasktypeFromEmptyMap() {  // b. С пустым списком задач.
         clearHistory();
-        Task taskActual = fileBackedTasksManager.getTask(task.getId());
+        Task taskActual = fBTM.getTask(task.getId());
 
         assertNull(taskActual);
     }
@@ -342,14 +346,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     // case 4
     @Test
     void testCase4GetTaskWithStandardCondition() { // 1) все в порядке, задача достается,
-        Task taskActual = fileBackedTasksManager.getTask(task.getId());
+        Task taskActual = fBTM.getTask(task.getId());
         assertEquals(task, taskActual);
     }
 
     @Test
     void testCase4getTaskFromEmptyMap() { // 2) список пуст, соответветственно задача не достанется,
         clearHistory();
-        Task taskActual = fileBackedTasksManager.getTask(task.getId());
+        Task taskActual = fBTM.getTask(task.getId());
         assertNull(taskActual);
     }
 
@@ -363,10 +367,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
                 Status.NEW,
                 LocalDateTime.parse("2000-01-01T00:00:00"),
                 50);
-        Subtask taskActual = (Subtask) fileBackedTasksManager.getTask(taskTest.getId());
+        Subtask taskActual = (Subtask) fBTM.getTask(taskTest.getId());
         assertNull(taskActual);
     }
-
 
 // ===================================== /case 5/ void updateTask(Task task) =====================================
 
@@ -381,16 +384,16 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
                 Status.NEW,
                 LocalDateTime.parse("2000-01-01T00:00:00"),
                 50);
-        fileBackedTasksManager.updateTask(taskTest);
-        Task taskActual = fileBackedTasksManager.getTask(taskTest.getId());
+        fBTM.updateTask(taskTest);
+        Task taskActual = fBTM.getTask(taskTest.getId());
         assertEquals(taskTest, taskActual);
     }
 
     @Test
     void testCase5UpdateTaskWhenEmptyMap() { // b. С пустым списком задач.
         clearHistory();
-        fileBackedTasksManager.updateTask(task);
-        Map<UUID, Task> shouldBeEmpty = new HashMap<>(fileBackedTasksManager.getTasks());
+        fBTM.updateTask(task);
+        Map<UUID, Task> shouldBeEmpty = new HashMap<>(fBTM.getTasks());
         assertEquals(new HashMap<>(), shouldBeEmpty);
     }
 
@@ -405,8 +408,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
                 Status.NEW,
                 LocalDateTime.parse("2000-01-01T00:00:00"),
                 50);
-        fileBackedTasksManager.updateTask(taskTest);
-        Map<UUID, Task> shouldBeEmpty = new HashMap<>(fileBackedTasksManager.getTasks());
+        fBTM.updateTask(taskTest);
+        Map<UUID, Task> shouldBeEmpty = new HashMap<>(fBTM.getTasks());
         assertEquals(new HashMap<>(), shouldBeEmpty);
     }
 
@@ -414,14 +417,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     @Test
     void testCase6RemoveTaskByIdWithStandardCondition() { // a. Со стандартным поведением. (из ТЗ)
-        fileBackedTasksManager.removeTaskById(task.getId());
-        assertNull(fileBackedTasksManager.getTasks().get(task.getId()));
+        fBTM.removeTaskById(task.getId());
+        assertNull(fBTM.getTasks().get(task.getId()));
     }
 
     @Test
     void testCase6RemoveTaskByIdWhenEmptyMap() { // b. С пустым списком задач.
         clearHistory();
-        assertNull(fileBackedTasksManager.getTasks().get(task.getId()));
+        assertNull(fBTM.getTasks().get(task.getId()));
     }
 
     @Test
@@ -435,7 +438,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
                 LocalDateTime.parse("2000-01-01T00:00:00"),
                 50);
         NullPointerException ex = assertThrows(NullPointerException.class, () -> {
-            fileBackedTasksManager.removeTaskById(taskTest.getId());
+            fBTM.removeTaskById(taskTest.getId());
         });
         assertTrue(ex.getMessage().contentEquals("Неверный идентификатор задачи"));
     }
@@ -444,17 +447,17 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     @Test
     void testCase7changeStatusTaskWithStandardCondition() { // a. Со стандартным поведением. (из ТЗ)
-        fileBackedTasksManager.changeStatusTask(task.getId(), Status.IN_PROGRESS);
-        assertEquals(Status.IN_PROGRESS, fileBackedTasksManager.getTasks().get(task.getId()).getStatus());
+        fBTM.changeStatusTask(task.getId(), Status.IN_PROGRESS);
+        assertEquals(Status.IN_PROGRESS, fBTM.getTasks().get(task.getId()).getStatus());
     }
 
     @Test
     void testCase7changeStatusTaskWhenEmptyMap() { // b. С пустым списком задач.
         clearHistory();
 
-        assertNull(fileBackedTasksManager.getTasks().get(task.getId()));
+        assertNull(fBTM.getTasks().get(task.getId()));
         NullPointerException ex = assertThrows(NullPointerException.class, () -> {
-            fileBackedTasksManager.changeStatusTask(task.getId(), Status.IN_PROGRESS);
+            fBTM.changeStatusTask(task.getId(), Status.IN_PROGRESS);
         });
         assertTrue(ex.getMessage().contentEquals("Неверный идентификатор задачи"));
     }
@@ -471,7 +474,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
                 0,
                 subtasks);
         NullPointerException ex = assertThrows(NullPointerException.class, () -> {
-            fileBackedTasksManager.changeStatusTask(epic.getId(), Status.IN_PROGRESS);
+            fBTM.changeStatusTask(epic.getId(), Status.IN_PROGRESS);
         });
         assertTrue(ex.getMessage().contentEquals("Неверный идентификатор задачи"));
     }
@@ -480,8 +483,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     @Test
     void testCase8GetSubtasksFromEpicWithStandardCondition() { // a. Со стандартным поведением. (из ТЗ)
-        List<Task> subtasks = new ArrayList<>(fileBackedTasksManager.getSubtasksFromEpic(epic.getId()));
-        boolean flag = fileBackedTasksManager.getTask(subtask.getId()).equals(subtasks.get(0));
+        List<Task> subtasks = new ArrayList<>(fBTM.getSubtasksFromEpic(epic.getId()));
+        boolean flag = fBTM.getTask(subtask.getId()).equals(subtasks.get(0));
         assertTrue(flag);
     }
 
@@ -489,13 +492,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     void testCase8GetSubtasksFromEpicWhenEmptyMap() { // b. С пустым списком задач.
         clearHistory();
 
-        assertEquals(new ArrayList<>(), fileBackedTasksManager.getSubtasksFromEpic(randomUuid)); // "Мапа пуста"
+        assertEquals(new ArrayList<>(), fBTM.getSubtasksFromEpic(randomUuid)); // "Мапа пуста"
     }
 
     @Test
     void testCase8GetSubtasksFromEpicWithWrongId() { // c. С неверным идентификатором задачи (пустой и/или несуществующий идентификатор).
         NullPointerException ex = assertThrows(NullPointerException.class, () -> {
-            fileBackedTasksManager.getSubtasksFromEpic(randomUuid);
+            fBTM.getSubtasksFromEpic(randomUuid);
         });
         assertTrue(ex.getMessage().contentEquals("Неверный идентификатор задачи"));
     }
@@ -504,9 +507,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     @Test
     void testCase9GetHistoryWithStandardCondition() { // a. Со стандартным поведением. (из ТЗ)
-        fileBackedTasksManager.getTask(epic.getId()); // заполняем историю по порядку
-        fileBackedTasksManager.getTask(task.getId());
-        List<Task> tasksByHistory = fileBackedTasksManager.getHistory();
+        fBTM.getTask(epic.getId()); // заполняем историю по порядку
+        fBTM.getTask(task.getId());
+        List<Task> tasksByHistory = fBTM.getHistory();
         boolean flag = (tasksByHistory.get(0).getTaskType().equals(TaskType.EPIC) &&
                 tasksByHistory.get(1).getTaskType().equals(TaskType.TASK));
         assertTrue(flag);
@@ -515,7 +518,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     @Test
     void testCase9GetHistoryWhenEmptyMap() { // b. С пустой мапой задач.
 
-        List<Task> tasksByHistory = fileBackedTasksManager.getHistory();
+        List<Task> tasksByHistory = fBTM.getHistory();
         assertEquals(new ArrayList<>(), tasksByHistory);
     }
 
@@ -524,13 +527,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     @Test
     void testCase11GetPrioritizedTasksWithStandardCondition() { // a. Со стандартным поведением. (из ТЗ)
         clearHistory();
-        fileBackedTasksManager.addTask(task);
-        fileBackedTasksManager.addTask(epic);
+        fBTM.addTask(task);
+        fBTM.addTask(epic);
         subtask.setEpicId(epic.getId());
-        fileBackedTasksManager.addTask(subtask);
+        fBTM.addTask(subtask);
 
         boolean flag = false;
-        List<Task> tasks = new ArrayList<>(fileBackedTasksManager.prioritizeTasks());
+        List<Task> tasks = new ArrayList<>(fBTM.prioritizeTasks());
         for (Task task1 : tasks) {
             if (task1.getTaskType().equals(TaskType.TASK) || task1.getTaskType().equals(TaskType.SUBTASK)) { // Эпики в prioritizedTasks не нужны
                 flag = true;
@@ -544,7 +547,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        fileBackedTasksManager.prioritizeTasks();
+        fBTM.prioritizeTasks();
 
         String expectedOutput = "Нужно больше задач";
         String actualOutput = outContent.toString().trim();
@@ -553,22 +556,15 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
     }
 
-    FileBackedTasksManager fManager = new FileBackedTasksManager(file);
-
-    @Override
-    @BeforeEach
-    void setManager() {
-        fManager = fileBackedTasksManager;
-    }
     @Test
     void testGetHistoryTasksAndCheckWithMapOnMatchingWithStandardCondition() {
         boolean flag = false;
         get();
         List<Task> tasks;
-        tasks = fManager.getHistory();
+        tasks = fBTM.getHistory();
         List<Task> tasksTest = new ArrayList<>();
         for (Task task : tasks) {
-            if (fileBackedTasksManager.getTasks().containsKey(task.getId())) {
+            if (fBTM.getTasks().containsKey(task.getId())) {
                 flag = true;
             }
         }
@@ -581,7 +577,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         boolean flag = false;
         get();
         List<Task> tasks;
-        tasks = fManager.getHistory();
+        tasks = fBTM.getHistory();
         assertEquals(new ArrayList<>(), tasks);
     }
 }

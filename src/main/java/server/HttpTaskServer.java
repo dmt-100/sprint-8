@@ -80,8 +80,13 @@ public class HttpTaskServer {
                     break;
                 }
                 case "POST_TASK": {
+                    String body = new String(httpExchange.getRequestBody().readAllBytes(), UTF_8);
+                    if (body.isEmpty()) {
+                        httpExchange.sendResponseHeaders(400, 0);
+                        return;
+                    }
                     Type typePost = new TypeToken<Task>() {}.getType();
-                    Task task = gson.fromJson(readText(httpExchange), typePost);
+                    Task task = gson.fromJson(body, typePost);
                     fileBackedTaskManager.addTask(task);
 
                     Task taskPost = fileBackedTaskManager.getTask(task.getId());
