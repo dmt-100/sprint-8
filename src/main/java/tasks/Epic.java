@@ -14,7 +14,7 @@ public class Epic extends Task {
 Всем привет! а у вас у всех классы Task, Subtask и Epic не имеют ссылок друг на друга? Вчера жестко потратил 2ч на то что gson пытался сделать бесконечный паровозик из моих классов Subtask и Epic, так как у Epic есть массив Subtask'ов и у Subtask есть ссылка на Epic. Как я понял, gson пытался сериализовать Epic, в котором есть Subtask'и, а у него в свою очередь ссылка Epic, и тут начинается бесконечность ) только слово transient разорвало паровоз
  */
 
-    private final transient List<UUID> subtasks;
+    private final List<UUID> subtasks;
 
     public Epic(
             TaskType taskType,
@@ -67,17 +67,6 @@ public class Epic extends Task {
         super(id, taskType, name, description, status);
         this.subtasks = subtasks;
     }
-//
-//    public Epic( // конструктор для восстановления taskfromString() создания задачи из строки
-//    ) {
-//        super(id, taskType, name, description, status);
-//        this.startTime = startTime;
-//        this.endTime = endTime;
-//        this.subtasks = subtasks;
-//        this.duration = duration;
-//    }
-
-
 
     @Override
     public String cleanSubtaskIds() {
@@ -104,7 +93,7 @@ public class Epic extends Task {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Subtask)) return false;
+        if (!(o instanceof Epic)) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
         return Objects.equals(subtasks, epic.subtasks);

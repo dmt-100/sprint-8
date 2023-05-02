@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db70d58e-657e-4b76-bf39-64aa292f9562" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/HttpTaskManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tasks/Epic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,11 +177,6 @@
           <option name="timeStamp" value="318" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/tests/TaskManagerTest.java</url>
-          <line>18</line>
-          <option name="timeStamp" value="354" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/InMemoryTaskManagerTest.java</url>
           <line>513</line>
           <option name="timeStamp" value="372" />
@@ -210,6 +205,11 @@
           <url>file://$PROJECT_DIR$/tests/HttpTaskManagerTest.java</url>
           <line>134</line>
           <option name="timeStamp" value="387" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/server/KVTaskClient.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="389" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
