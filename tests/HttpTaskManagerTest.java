@@ -41,9 +41,6 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     Subtask subtask1;
     Subtask subtask2;
 
-
-    TasksManager httpTaskManager;
-
     @Override
     void setManager() {
         taskManager = new HttpTaskManager(URI.create("http://localhost:8078/"), false);
@@ -56,7 +53,6 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
         kvServer.start();
         setManager();
 // ----------------------------------------
-        httpTaskManager = new HttpTaskManager(uri, false);
 
         task1 = new Task(
                 TaskType.TASK,
@@ -99,19 +95,19 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
                 epicUuid
         );
 
-        httpTaskManager = Managers.getDefault();
-        httpTaskManager.save();
-        httpTaskManager = new HttpTaskManager(uri, true);
+        taskManager = Managers.getDefault();
+        taskManager.save();
+        taskManager = new HttpTaskManager(uri, true);
 
     }
 
     @Override
     void beforeEachAddTasks() {
-        httpTaskManager.addTask(task1);
-        httpTaskManager.addTask(epic1);
-        httpTaskManager.addTask(subtask1);
-        httpTaskManager.addTask(subtask2);
-        httpTaskManager.save();
+        taskManager.addTask(task1);
+        taskManager.addTask(epic1);
+        taskManager.addTask(subtask1);
+        taskManager.addTask(subtask2);
+        taskManager.save();
     }
 
     @AfterEach
@@ -133,12 +129,12 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     void checkAddedTasks() {
         new HttpTaskManager(uri, true);
 
-        List<Task> afterLoad = httpTaskManager
+        List<Task> afterLoad = taskManager
                 .getAllTasks().stream().toList();
         int expected = afterLoad.size();
-        assertEquals(expected, httpTaskManager.getAllTasks().size(),
+        assertEquals(expected, taskManager.getAllTasks().size(),
                 "Задачи после выгрузки не совпадают");
-        assertEquals(4, httpTaskManager.prioritizeTasks().size(), // эпики не входят в сортировку!
+        assertEquals(4, taskManager.prioritizeTasks().size(), // эпики не входят в сортировку!
                 "Отсортированный список не совпадает");
     }
 
@@ -146,8 +142,8 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     void checkHistory() {
         new HttpTaskManager(uri, true);
 
-        List<Task> expected = httpTaskManager.getHistory();
-        assertEquals(expected.size(), httpTaskManager.getHistory().size(),
+        List<Task> expected = taskManager.getHistory();
+        assertEquals(expected.size(), taskManager.getHistory().size(),
                 "Список задач в истории не совпадает");
     }
 
