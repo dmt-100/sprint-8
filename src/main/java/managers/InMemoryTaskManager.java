@@ -2,6 +2,7 @@ package main.java.managers;
 
 import main.java.intefaces.HistoryManager;
 import main.java.intefaces.TasksManager;
+import main.java.service.ManagerSaveException;
 import main.java.service.Status;
 import main.java.service.TaskType;
 import main.java.tasks.Epic;
@@ -248,18 +249,21 @@ public class InMemoryTaskManager implements TasksManager {
     @Override
     public List<Task> getSubtasksFromEpic(UUID epicId) {
         List<Task> subtasks = new ArrayList<>();
-        try {
-            if (tasks.isEmpty()) {
-                System.out.println("Мапа пуста");
-            } else {
-                for (UUID subtaskUUID : tasks.get(epicId).getSubtasks()) {
-                    historyManager.add(tasks.get(subtaskUUID));
-                    subtasks.add(tasks.get(subtaskUUID));
-                }
-            }
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Неверный идентификатор задачи");
+
+        if (tasks.isEmpty()) {
+            System.out.println("Мапа пуста");
+            return new ArrayList<>();
         }
+        if (!tasks.containsKey(epicId)) {
+            System.out.println("Id не найден");
+            return new ArrayList<>();
+        } else {
+            for (UUID subtaskUUID : tasks.get(epicId).getSubtasks()) {
+                historyManager.add(tasks.get(subtaskUUID));
+                subtasks.add(tasks.get(subtaskUUID));
+            }
+        }
+
         return subtasks;
     }
 
@@ -304,6 +308,11 @@ public class InMemoryTaskManager implements TasksManager {
     @Override
     public List<UUID> loadHistoryFromFile() {
         return null;
+    }
+
+    @Override
+    public void save() {
+
     }
 
     // ==========================   Getters       ==========================

@@ -76,8 +76,9 @@ public class KVTaskClient {
                 return response.body();
             }
         } catch (IOException | InterruptedException e) {
-            throw new ManagerSaveException("Что-то не так в методе load");
+            throw new ManagerSaveException("Что-то не так в методе register");
         }
     }
 
 }
+

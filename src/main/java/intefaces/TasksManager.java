@@ -40,4 +40,5 @@ public interface TasksManager {
 
     List<UUID> loadHistoryFromFile();
 
+    void save();
 }
