@@ -4,7 +4,6 @@ import main.java.service.Status;
 import main.java.service.TaskType;
 import main.java.tasks.Task;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -36,5 +35,9 @@ public interface TasksManager {
     List<Task> getAllTasks();
 
     List<Task> prioritizeTasks();
+
+    List<Task> getAddedTasksFromFile();
+
+    List<UUID> loadHistoryFromFile();
 
 }

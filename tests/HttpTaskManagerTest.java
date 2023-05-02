@@ -45,6 +45,7 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
         httpTaskManager = new HttpTaskManager(uri, false);
     }
 
+
     @BeforeEach
     void init() throws IOException {
         kvServer = new KVServer();
@@ -123,7 +124,7 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
 
     @Test
     void checkAddedTasks() {
-        HttpTaskManager load = new HttpTaskManager(uri, true);
+        HttpTaskManager load = new HttpTaskManager(uri, true); // ?? другой менеджер??
         List<Task> expected = new ArrayList<>(load.getAllTasks());
         List<Task> actual = new ArrayList<>(httpTaskManager.getAllTasks());
         assertEquals(expected, actual,
@@ -138,25 +139,4 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
                 "Список задач в истории не совпадает");
     }
 
-//    @Test
-//    void checkAddedTasks() {
-//        new HttpTaskManager(uri, true);
-//
-//        List<Task> afterLoad = httpTaskManager
-//                .getAllTasks().stream().toList();
-//        int expected = afterLoad.size();
-//        assertEquals(expected, httpTaskManager.getAllTasks().size(),
-//                "Задачи после выгрузки не совпадают");
-//        assertEquals(4, httpTaskManager.prioritizeTasks().size(), // эпики не входят в сортировку!
-//                "Отсортированный список не совпадает");
-//    }
-//
-//    @Test
-//    void checkHistory() {
-//        new HttpTaskManager(uri, true);
-//
-//        List<Task> expected = httpTaskManager.getHistoryManager().getTasksInHistory();
-//        assertEquals(expected.size(), httpTaskManager.getHistory().size(),
-//                "Список задач в истории не совпадает");
-//    }
 }

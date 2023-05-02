@@ -96,7 +96,8 @@ public class HttpTaskServer {
                     break;
                 }
                 case "DELETE_TASK_ID": {
-                    if (Pattern.matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", String.valueOf(uuid))) {
+                    if (Pattern.matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                            String.valueOf(uuid))) {
                         String taskName = fileBackedTaskManager.getTasks().get(uuid).getName();
                         fileBackedTaskManager.removeTaskById(uuid);
                         System.out.println("Задача и назаванием: " + taskName + " удалена.");

@@ -552,7 +552,7 @@ abstract class TaskManagerTest<T extends TasksManager> {
 
         inMemoryTaskManager.prioritizeTasks();
 
-        String expectedOutput = "Нужно ещё больше задач";
+        String expectedOutput = "Нужно больше задач";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);

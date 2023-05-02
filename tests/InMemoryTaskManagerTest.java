@@ -46,8 +46,6 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         inMemoryTaskManager = new InMemoryTaskManager();
     }
 
-
-
     @BeforeEach
     void init() {
         setTaskManager();
@@ -110,10 +108,8 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     }
 
     @AfterEach
-    void after() {
-//        for (Task task : inMemoryTaskManager.getTasks().values()) {
-//            inMemoryTaskManager.removeTaskById(task.getId());
-//        }
+    void afterEach() {
+        inMemoryTaskManager.getTasks().clear();
     }
 
 
@@ -130,7 +126,6 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
                 assertTrue(flag);
             }
         }
-        inMemoryTaskManager.getTasks().clear();
 
     }
 

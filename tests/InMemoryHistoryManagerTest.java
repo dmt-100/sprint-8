@@ -15,30 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-/* Не совсем понял про Дублирование чего?? насколько я помню из ТЗ задача переписывается с новым временем
-
-здесь говорится про дублирование задач в истории,
-когда ты несколько раз достал какую-то одну задачу из списка задач, а в истории у тебя эта задача записана только 1 раз
-
-    Насколько помню задача в истории должна отображаться только последней то есть перезаписывать ранее просмотренную
-    это у меня выполнено
-*/
-
-/*
-    3. Для HistoryManager — тесты для всех методов интерфейса. Граничные условия:
-     a. Пустая история задач.
-     b. Дублирование.
-     с. Удаление из истории: начало, середина, конец.
- */
 public class InMemoryHistoryManagerTest {
-//    private final PrintStream standardOut = System.out;
-//    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-//
-//    @BeforeEach
-//    public void setUp() {
-//        System.setOut(new PrintStream(outputStreamCaptor));
-//    }
+
 
     private static final String sep = File.separator;
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");

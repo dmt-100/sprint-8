@@ -12,6 +12,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -28,14 +29,22 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    private static FileBackedTasksManager loadFromFile(File file) {
-        var manager = new FileBackedTasksManager(file);
+    public  List<UUID> loadHistoryFromFile() {
         try {
-            manager.historyFromString(file);
+            List<UUID> history = new ArrayList<>();
+
+            for (String uuid : historyFromString()) {
+                if (Pattern.matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                        String.valueOf(uuid))) {
+                    history.add(UUID.fromString(uuid));
+                } else {
+                    history = new ArrayList<>();
+                }
+            }
+            return history;
         } catch (IOException e) {
             throw new ManagerSaveException("Файл с состоянием таск менеджера не найден или поврежден");
         }
-        return manager;
     }
 
     protected void save() {
@@ -67,7 +76,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     // метод возвращает последнюю строку с просмотренными задачами из файла
-    private List<String> historyFromString(File file) throws IOException {
+    private List<String> historyFromString() throws IOException {
         BufferedReader br;
         List<String> listString = new ArrayList<>();
         br = new BufferedReader(new FileReader(file));
@@ -87,7 +96,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     // ТЗ-6. Напишите метод создания задачи из строки
-    private List<Task> taskfromString() {
+    public List<Task> getAddedTasksFromFile() {
         List<Task> tasks = new ArrayList<>(); // Добавил задачи сразу в лист
         Task task;
         Epic epic;
@@ -100,7 +109,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Status status;
         LocalDateTime startTime;
         LocalDateTime endTime;
-        int duration = 0;
+        int duration;
         List<UUID> list = new ArrayList<>();
         UUID epicId = null;
 
@@ -158,17 +167,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private List<List<String>> readFromCsvTasks() {
+        List<String> innerList = null;
         List<List<String>> addedTasks = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
-            List<String> innerList;
+
             while ((line = br.readLine()) != null) {
                 innerList = new ArrayList<>(Arrays.asList(line.split(",")));
                 addedTasks.add(innerList);
             }
             addedTasks.remove(0);
-            addedTasks.remove(addedTasks.size() - 1);
-            addedTasks.remove(addedTasks.size() - 1);
+
+            if (innerList.get(0).equals("")) {
+                addedTasks.remove(addedTasks.size() - 1);
+            } else {
+                addedTasks.remove(addedTasks.size() - 1);
+                addedTasks.remove(addedTasks.size() - 1);
+            }
             return addedTasks;
         } catch (IOException e) {
             throw new ManagerSaveException();

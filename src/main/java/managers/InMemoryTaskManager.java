@@ -86,6 +86,7 @@ public class InMemoryTaskManager implements TasksManager {
                     return;
                 }
                 tasks.put(task.getId(), task); // для эпика
+                System.out.println("Эпик: " + task.getName() + ", успешно добавлена");
             } else {
                 tasks.put(task.getId(), task);
                 System.out.println("Задача: " + task.getName() + ", успешно добавлена");
@@ -127,10 +128,12 @@ public class InMemoryTaskManager implements TasksManager {
     public List<Task> getAllTasksByTaskType(TaskType taskType) {
         List<Task> list;
         if (!tasks.isEmpty()) {
-            list = tasks.values().stream().filter(task -> task
+            list = tasks.values()
+                    .stream()
+                    .filter(task -> task
                             .getTaskType().equals(taskType))
                     .collect(Collectors.toList());
-
+            list.stream().forEach(t -> historyManager.add(t));
         } else {
             return Collections.emptyList();
         }
@@ -287,10 +290,20 @@ public class InMemoryTaskManager implements TasksManager {
                 System.out.println(prioritizedTask);
             }
         } else {
-            prioritizedTasks = null;
+            prioritizedTasks = new ArrayList<>();
             System.out.println("Нужно больше задач");
         }
         return prioritizedTasks;
+    }
+
+    @Override
+    public List<Task> getAddedTasksFromFile() {
+        return null;
+    }
+
+    @Override
+    public List<UUID> loadHistoryFromFile() {
+        return null;
     }
 
     // ==========================   Getters       ==========================
