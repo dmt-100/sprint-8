@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../libs" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/../../libs/commons-lang3-3.12.0/apidocs" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../libs/apache-tomcat-10.1.8/webapps/docs/appdev/sample/src" />
+      <root url="file://$PROJECT_DIR$/../../libs/apache-tomcat-10.1.8/webapps/examples/WEB-INF/classes" />
+      <root url="file://$PROJECT_DIR$/../../libs" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../libs" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../libs" recursive="false" type="SOURCES" />
+  </library>
+</component>
