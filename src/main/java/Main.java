@@ -21,9 +21,6 @@ public class Main {
     private static final String saveTasksFilePath = String.join(sep, "src", "main", "java", "resources", "taskSaves" + ".csv");
     private static final File file = new File(saveTasksFilePath);
 
-
-
-
     public static void main(String[] args) throws IOException, InterruptedException {
 
         new KVServer().start();
