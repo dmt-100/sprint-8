@@ -262,7 +262,7 @@ public class InMemoryTaskManager implements TasksManager {
     // case 10: получение всех задач
     @Override
     public List<Task> getAllTasks() {
-        return tasks.values().stream().toList();
+        return (List<Task>) tasks.values().stream().collect(Collectors.toSet());
     }
 
     // case 11: сортировка задач по стартовому времени

@@ -114,7 +114,7 @@ public class KVServer {
     }
 
     private void register(HttpExchange h) {
-        try (h) {
+        try {
             System.out.println("\n/register");
             if ("GET".equals(h.getRequestMethod())) {
 

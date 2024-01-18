@@ -37,8 +37,7 @@ public class HttpTaskServer {
     }
 
     private void handleTasks(HttpExchange httpExchange) {
-        try (httpExchange) {
-
+        try {
             String uri = String.valueOf(httpExchange.getRequestURI());
             String path = httpExchange.getRequestURI().getPath();
 
@@ -183,7 +182,12 @@ public class HttpTaskServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+        if (httpExchange != null) {
+            httpExchange.close();
         }
+    }
+
     }
 
     private int parsePathId(String path) {
